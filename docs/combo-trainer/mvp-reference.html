@@ -1,0 +1,1425 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Combos Ghostface Scorpion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* VOICE everyday, a training tool for a hobby
+   IDEA the training-mode input display of a fighting game, as a rhythm lane
+   PICTURE the lane: inputs scroll into a "now" line while the current step is shown big
+   COLOUR fixed night palette: ink black ground, bone text, Scorpion fire yellow, blood red for EX
+   TYPE Barlow Condensed 700 for titles and figures + Barlow
+   LAYOUT laptop: combo list left, stage + controls + steps right; phone: title, combo chips, stage, controls, steps */
+      :root {
+        color-scheme: dark;
+        --bg: #0f0e12;
+        --panel: #17151c;
+        --panel2: #1f1c25;
+        --line: #2c2833;
+        --ink: #f1ece4;
+        --mute: #a49dab;
+        --fire: #ffb81c;
+        --blood: #e5384f;
+        --sq: #ff8fd6;
+        --tr: #3fd6a0;
+        --cr: #7aa2ff;
+        --ci: #ff5d6c;
+      }
+      * {
+        box-sizing: border-box;
+        min-width: 0;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      body {
+        font:
+          16px/1.55 Barlow,
+          system-ui,
+          sans-serif;
+        overflow-x: clip;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+      }
+      .top {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 28px max(4vw, 16px) 8px;
+      }
+      h1 {
+        font:
+          700 clamp(34px, 5vw, 48px)/1.05 'Barlow Condensed',
+          sans-serif;
+        letter-spacing: -0.01em;
+        margin: 0;
+      }
+      .top p {
+        margin: 6px 0 0;
+        color: var(--mute);
+        max-width: 60ch;
+      }
+      .app {
+        max-width: 1240px;
+        margin: 0 auto;
+        padding: 16px max(4vw, 16px) 40px;
+        display: grid;
+        grid-template-columns: 290px minmax(0, 1fr);
+        gap: 24px;
+        align-items: start;
+      }
+      .tabs {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+      .tabs button {
+        flex: 1;
+        min-height: 44px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .tabs button[aria-selected='true'] {
+        background: var(--ink);
+        color: var(--bg);
+        border-color: var(--ink);
+      }
+      .list {
+        display: grid;
+        gap: 6px;
+      }
+      .gh {
+        margin: 10px 2px 2px;
+        color: var(--mute);
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .item {
+        display: grid;
+        gap: 2px;
+        text-align: left;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        cursor: pointer;
+        min-height: 44px;
+      }
+      .item:hover {
+        border-color: #4a4453;
+      }
+      .item.on {
+        border-color: var(--fire);
+        background: #231e14;
+      }
+      .it-t {
+        font:
+          700 19px/1.15 'Barlow Condensed',
+          sans-serif;
+      }
+      .it-m {
+        font-size: 14px;
+        color: var(--mute);
+      }
+      .item.on .it-m {
+        color: #e9d9b4;
+      }
+      .stage {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .head {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px 24px;
+        padding: 18px 20px 14px;
+        border-bottom: 1px solid var(--line);
+      }
+      .head h2 {
+        font:
+          700 clamp(26px, 3.4vw, 34px)/1.05 'Barlow Condensed',
+          sans-serif;
+        margin: 0;
+      }
+      .head p {
+        margin: 4px 0 0;
+        color: var(--mute);
+        font-size: 15px;
+      }
+      .stats {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .st b {
+        display: block;
+        font:
+          700 28px/1 'Barlow Condensed',
+          sans-serif;
+        white-space: nowrap;
+      }
+      .st span {
+        font-size: 13px;
+        color: var(--mute);
+      }
+      .now {
+        padding: 18px 20px 10px;
+        min-height: 206px;
+        display: grid;
+        align-content: start;
+        gap: 10px;
+      }
+      .now-step {
+        font-size: 14px;
+        color: var(--mute);
+        font-weight: 600;
+      }
+      .now-input {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+        min-height: 76px;
+        --gs: clamp(48px, 7vw, 68px);
+      }
+      .now-input .tk {
+        opacity: 0.28;
+        transition:
+          opacity 0.08s,
+          transform 0.12s;
+      }
+      .now-input .tk.on {
+        opacity: 1;
+      }
+      .now-input .tk.pop {
+        transform: scale(1.12);
+      }
+      .now-input .sep {
+        font-size: 28px;
+        color: var(--mute);
+      }
+      .count {
+        font:
+          700 72px/1 'Barlow Condensed',
+          sans-serif;
+        color: var(--fire);
+      }
+      .now-note {
+        min-height: 24px;
+        color: var(--fire);
+        font-weight: 600;
+      }
+      .next {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        color: var(--mute);
+        font-size: 14px;
+        --gs: 26px;
+        min-height: 30px;
+      }
+      .lane {
+        position: relative;
+        height: 108px;
+        border-top: 1px solid var(--line);
+        background: repeating-linear-gradient(90deg, #141217 0 40px, #16141a 40px 80px);
+        overflow: hidden;
+        -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+        mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+        --hx: 60px;
+      }
+      .hit {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: var(--hx);
+        width: 3px;
+        margin-left: -1px;
+        background: var(--fire);
+        box-shadow: 0 0 0 4px #ffb81c22;
+      }
+      .hit span {
+        position: absolute;
+        bottom: 6px;
+        left: 8px;
+        font-size: 13px;
+        color: var(--fire);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .note {
+        position: absolute;
+        top: 54%;
+        left: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 6px;
+        border-radius: 12px;
+        background: var(--panel2);
+        border: 1px solid var(--line);
+        --gs: 32px;
+        will-change: transform;
+      }
+      .note.k-k {
+        border-color: #7a5a12;
+      }
+      .note.k-f {
+        border-color: #7d2230;
+      }
+      .note.done {
+        opacity: 0.3;
+      }
+      .note.hot {
+        background: #2e2615;
+        border-color: var(--fire);
+      }
+      .sn {
+        position: absolute;
+        top: -21px;
+        left: 2px;
+        font-size: 13px;
+        color: var(--mute);
+        font-weight: 600;
+      }
+      .bar {
+        height: 4px;
+        background: #25222b;
+      }
+      .bar div {
+        height: 100%;
+        width: 0;
+        background: var(--fire);
+      }
+      .hint {
+        margin: 0;
+        padding: 10px 20px 14px;
+        font-size: 14px;
+        color: var(--mute);
+      }
+      .g {
+        width: var(--gs, 28px);
+        height: var(--gs, 28px);
+        display: inline-grid;
+        place-items: center;
+        border-radius: 50%;
+        background: #2a2630;
+        box-shadow:
+          inset 0 -3px 0 #0006,
+          inset 0 1px 0 #ffffff14;
+        flex: none;
+      }
+      .g svg {
+        width: 62%;
+        height: 62%;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .sq {
+        color: var(--sq);
+      }
+      .tr {
+        color: var(--tr);
+      }
+      .cr {
+        color: var(--cr);
+      }
+      .ci {
+        color: var(--ci);
+      }
+      .dir {
+        border-radius: 24%;
+        color: var(--ink);
+        background: #34303b;
+      }
+      .pill {
+        width: auto;
+        padding: 0 0.55em;
+        border-radius: 999px;
+        font:
+          700 calc(var(--gs, 28px) * 0.44)/1 'Barlow Condensed',
+          sans-serif;
+      }
+      .pill.k {
+        background: var(--fire);
+        color: #1c1300;
+      }
+      .pill.ex {
+        background: var(--blood);
+        color: #fff;
+      }
+      .pill.th {
+        background: #4a4553;
+        color: var(--ink);
+      }
+      .plus {
+        font-style: normal;
+        color: var(--mute);
+        font-size: calc(var(--gs, 28px) * 0.5);
+        font-weight: 600;
+      }
+      .tk {
+        display: inline-flex;
+        align-items: center;
+        gap: 3px;
+      }
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        margin: 16px 0;
+      }
+      .btn {
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        cursor: pointer;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .btn svg {
+        width: 18px;
+        height: 18px;
+        fill: currentColor;
+      }
+      .btn.play {
+        background: var(--fire);
+        color: #1c1300;
+        border-color: var(--fire);
+        min-width: 140px;
+        justify-content: center;
+      }
+      .seg {
+        display: flex;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .seg button {
+        min-height: 46px;
+        min-width: 56px;
+        border: 0;
+        background: var(--panel);
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .seg button + button {
+        border-left: 1px solid var(--line);
+      }
+      .seg button[aria-pressed='true'] {
+        background: var(--ink);
+        color: var(--bg);
+      }
+      .tog {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel);
+        cursor: pointer;
+        font-weight: 600;
+      }
+      .tog input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--fire);
+        margin: 0;
+      }
+      button:focus-visible,
+      .tog:focus-within {
+        outline: 2px solid var(--fire);
+        outline-offset: 2px;
+      }
+      .steps {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 6px;
+      }
+      .steps li {
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: center;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        cursor: pointer;
+        --gs: 28px;
+      }
+      .steps li.done {
+        opacity: 0.55;
+      }
+      .steps li.on {
+        border-color: var(--fire);
+        background: #231e14;
+        opacity: 1;
+      }
+      .num {
+        font:
+          700 22px/1 'Barlow Condensed',
+          sans-serif;
+        color: var(--mute);
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+      }
+      .chips .sep {
+        font-style: normal;
+        color: var(--mute);
+      }
+      .lb {
+        margin: 6px 0 0;
+        font-size: 15px;
+      }
+      .lb em {
+        font-style: normal;
+        color: var(--fire);
+        font-weight: 600;
+      }
+      .kd {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--mute);
+        white-space: nowrap;
+      }
+      .kd.k-k {
+        color: var(--fire);
+      }
+      .kd.k-f {
+        color: #ff7a8a;
+      }
+      .kd.k-s {
+        color: #c9b8ff;
+      }
+      .kd.k-a {
+        color: #8fd3ff;
+      }
+      details {
+        margin-top: 18px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: var(--panel);
+        padding: 4px 16px;
+      }
+      summary {
+        cursor: pointer;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+      }
+      .legend {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 10px 18px;
+        padding: 6px 0 14px;
+        --gs: 28px;
+      }
+      .legend div {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+      }
+      .foot {
+        font-size: 14px;
+        color: var(--mute);
+        margin: 18px 0 0;
+      }
+      .foot a {
+        color: var(--ink);
+      }
+      @media (max-width: 860px) {
+        .app {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 14px;
+        }
+        .list {
+          display: flex;
+          overflow-x: auto;
+          gap: 8px;
+          padding-bottom: 6px;
+          scroll-snap-type: x proximity;
+        }
+        .gh {
+          display: none;
+        }
+        .item {
+          flex: 0 0 200px;
+          scroll-snap-align: start;
+        }
+      }
+      @media (max-width: 600px) {
+        .head {
+          padding: 14px 16px 12px;
+        }
+        .now {
+          padding: 14px 16px 8px;
+          min-height: 190px;
+        }
+        .lane {
+          height: 96px;
+        }
+        .note {
+          --gs: 28px;
+          padding: 5px;
+        }
+        .hint {
+          padding: 10px 16px 12px;
+        }
+        .controls .btn.play {
+          flex: 1 0 100%;
+        }
+        .steps li {
+          grid-template-columns: 28px minmax(0, 1fr);
+          padding: 10px 12px;
+        }
+        .kd {
+          grid-column: 2;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .now-input .tk {
+          transition: none;
+        }
+        .now-input .tk.pop {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <h1>Ghostface + Scorpion</h1>
+      <p>
+        Combos de Mortal Kombat 1 no controle de PS5. Escolha um combo e toque em Tocar para ver cada botão no
+        momento de apertar.
+      </p>
+    </header>
+    <div class="app">
+      <aside>
+        <div class="tabs" role="tablist">
+          <button id="tab-combo" role="tab" aria-selected="true">Combos</button>
+          <button id="tab-peca" role="tab" aria-selected="false">Peças</button>
+        </div>
+        <div id="list" class="list"></div>
+      </aside>
+      <main>
+        <section class="stage" aria-label="Execução do combo">
+          <div class="head">
+            <div>
+              <h2 id="cName"></h2>
+              <p id="cMeta"></p>
+            </div>
+            <div class="stats" id="cStats"></div>
+          </div>
+          <div class="now" aria-live="polite">
+            <div class="now-step" id="nowStep"></div>
+            <div class="now-input" id="nowInput"></div>
+            <div class="now-note" id="nowNote"></div>
+            <div class="next" id="nextInput"></div>
+          </div>
+          <div class="lane" id="lane">
+            <div class="hit"><span>agora</span></div>
+            <div id="notes"></div>
+          </div>
+          <div class="bar"><div id="prog"></div></div>
+          <p class="hint">
+            Ritmo aproximado: o tempo exato depende do hitstun. Comece em 0,5x e ajuste no Modo Treino.
+          </p>
+        </section>
+        <div class="controls">
+          <button class="btn play" id="play" aria-pressed="false"></button>
+          <button class="btn" id="restart">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 5a7 7 0 1 1-6.6 4.7l1.9.6A5 5 0 1 0 12 7v3L7.5 6 12 2z" /></svg
+            >Reiniciar
+          </button>
+          <div class="seg" id="speed" role="group" aria-label="Velocidade">
+            <button data-s="0.5">0,5x</button><button data-s="0.75">0,75x</button
+            ><button data-s="1">1x</button>
+          </div>
+          <label class="tog"><input type="checkbox" id="loop" />Repetir</label>
+          <label class="tog"><input type="checkbox" id="sound" checked />Som</label>
+        </div>
+        <ol class="steps" id="steps"></ol>
+        <details>
+          <summary>Legenda dos botões</summary>
+          <div class="legend" id="legend"></div>
+        </details>
+        <p class="foot">
+          Combos da comunidade <a href="https://mk1kombo.kagewebsite.com/combos-ghostface/all/">mk1kombo</a>,
+          com o autor indicado em cada um. Notação para o personagem virado para a direita: a seta → aponta
+          sempre para o oponente.
+        </p>
+      </main>
+    </div>
+    <script>
+      {
+        const FACE = {
+          1: ['sq', '<rect x="7" y="7" width="10" height="10" rx="1"/>'],
+          2: ['tr', '<path d="M12 5.8 18.6 17.2H5.4Z"/>'],
+          3: ['cr', '<path d="M7 7 17 17M17 7 7 17"/>'],
+          4: ['ci', '<circle cx="12" cy="12" r="6"/>'],
+        };
+        const PILL = { K: ['R1', 'k'], EX: ['R2', 'ex'], TH: ['L1', 'th'] };
+        const DIR = { F: 0, B: 180, U: -90, D: 90, UF: -45 };
+        const NAME = {
+          1: 'Quadrado',
+          2: 'Triângulo',
+          3: 'X',
+          4: 'Círculo',
+          K: 'R1, Kameo Scorpion',
+          EX: 'R2, EX (gasta 1 barra)',
+          TH: 'L1, agarrão',
+          F: 'Frente',
+          B: 'Trás',
+          U: 'Pulo',
+          D: 'Baixo',
+          UF: 'Pulo pra frente',
+        };
+        const GAP = { n: 260, s: 90, k: 130, a: 150, f: 90 };
+        const KIND = { n: 'Normal', s: 'Especial', k: 'Kameo', a: 'No ar', f: 'Final' };
+        const LEAD = 1200;
+        const FIN = { i: 'D F 3 , 1', k: 'f', l: 'Psychotic Rush e Rushing Stab' };
+        const DATA = [
+          {
+            id: 'c338',
+            cat: 'c',
+            group: 'Sem barra',
+            title: 'Sem gastar barra',
+            tag: '#338',
+            author: 'Kage',
+            dmg: 369,
+            hits: 24,
+            steps: [
+              { i: 'F+2 1', k: 'n', l: 'Abertura' },
+              { i: 'F+K', k: 'k', l: 'Scorpion (→ + R1)' },
+              { i: 'D B 4', k: 's', l: 'Always Outnumbered' },
+              { i: '2 2 1+3', k: 'n', l: 'Cancelamento em pulo', s: 1 },
+              { i: 'U 2 2', k: 'a', l: 'Pulo e △ △ no ar' },
+              { i: 'F+4', k: 'n', l: '→ ○', s: 1 },
+              { i: 'U 2 2', k: 'a', l: 'Pulo e △ △ no ar' },
+              { i: 'B+3', k: 'n', l: '← X levanta o oponente' },
+              { i: 'B D F 1', k: 's', l: 'Father Death' },
+              { i: 'D+K', k: 'k', l: 'Scorpion (↓ + R1)' },
+              { i: 'B+3', k: 'n', l: '← X de novo' },
+              FIN,
+            ],
+          },
+          {
+            id: 'c469',
+            cat: 'c',
+            group: '1 barra',
+            title: 'O mais curto',
+            tag: '#469',
+            author: 'Therealak1',
+            dmg: 384,
+            hits: 18,
+            pos: 'meio da tela',
+            steps: [
+              { i: 'F+2 1', k: 'n', l: 'Abertura' },
+              { i: 'D B 3+EX', k: 's', l: 'Backstage Pass EX', s: 1 },
+              { i: '4 4', k: 'n', l: '○ ○' },
+              { i: 'F+K', k: 'k', l: 'Scorpion (→ + R1)' },
+              { i: 'D B 4', k: 's', l: 'Always Outnumbered' },
+              { i: '2 2 TH', k: 'n', l: '△ △ e agarrão' },
+              { i: 'UF 2 2', k: 'a', l: 'Pulo pra frente e △ △ no ar' },
+              { i: '4', k: 'n', l: '○' },
+              FIN,
+            ],
+          },
+          {
+            id: 'c340',
+            cat: 'c',
+            group: '1 barra',
+            title: 'Dois pulos com troca',
+            tag: '#340',
+            author: 'Kage',
+            dmg: 397,
+            hits: 21,
+            steps: [
+              { i: 'F+2 1', k: 'n', l: 'Abertura' },
+              { i: 'D B 3+EX', k: 's', l: 'Backstage Pass EX', s: 1 },
+              { i: '4 4', k: 'n', l: '○ ○' },
+              { i: 'F+K', k: 'k', l: 'Scorpion (→ + R1)' },
+              { i: 'D B 4', k: 's', l: 'Always Outnumbered' },
+              { i: '2 2 1+3', k: 'n', l: 'Cancelamento em pulo', s: 1 },
+              { i: 'U 2 2', k: 'a', l: 'Pulo e △ △ no ar' },
+              { i: 'F+4', k: 'n', l: '→ ○', s: 1 },
+              { i: 'U 2 2', k: 'a', l: 'Pulo e △ △ no ar' },
+              { i: 'B+3', k: 'n', l: '← X levanta o oponente' },
+              FIN,
+            ],
+          },
+          {
+            id: 'c521',
+            cat: 'c',
+            group: '1 barra',
+            title: 'Father Death com Kameo',
+            tag: '#521',
+            author: 'D34THSKVLL',
+            dmg: 416,
+            hits: 24,
+            steps: [
+              { i: 'F+2 1', k: 'n', l: 'Abertura' },
+              { i: 'D B 3+EX', k: 's', l: 'Backstage Pass EX', s: 1 },
+              { i: '2 2 2', k: 'n', l: '△ △ △' },
+              { i: 'B D F 1', k: 's', l: 'Father Death' },
+              { i: 'D+K', k: 'k', l: 'Scorpion (↓ + R1)' },
+              { i: '2 2 TH', k: 'n', l: '△ △ e agarrão', s: 1 },
+              { i: 'UF 2 2', k: 'a', l: 'Pulo pra frente e △ △ no ar' },
+              { i: 'B+3', k: 'n', l: '← X levanta o oponente' },
+              FIN,
+            ],
+          },
+          {
+            id: 'c361',
+            cat: 'c',
+            group: '1 barra',
+            title: 'Abre com △ △ △ e Kameo',
+            tag: '#361',
+            author: 'SummaBlasphemia',
+            dmg: 416,
+            hits: 24,
+            steps: [
+              { i: '2 2 2', k: 'n', l: '△ △ △' },
+              { i: 'K', k: 'k', l: 'Scorpion (R1)' },
+              { i: 'D B 4', k: 's', l: 'Always Outnumbered', h: 1, n: 'Segure ○ para atrasar o golpe' },
+              { i: 'F+2 1', k: 'n', l: 'Abertura' },
+              { i: 'D B 3+EX', k: 's', l: 'Backstage Pass EX', s: 1 },
+              { i: '2 2 1+3', k: 'n', l: 'Cancelamento em pulo', s: 1 },
+              { i: 'UF 2 2', k: 'a', l: 'Pulo pra frente e △ △ no ar' },
+              { i: 'B+3', k: 'n', l: '← X levanta o oponente' },
+              { i: 'F+K', k: 'k', l: 'Scorpion (→ + R1)' },
+              { i: 'D B 4', k: 's', l: 'Always Outnumbered' },
+              { i: 'F+2 1', k: 'n', l: '→ △ □ de novo' },
+              FIN,
+            ],
+          },
+          {
+            id: 'c362',
+            cat: 'c',
+            group: '2 barras',
+            title: 'Maior dano da dupla',
+            tag: '#362',
+            author: 'SummaBlasphemia',
+            dmg: 432,
+            hits: 21,
+            steps: [
+              { i: '2 2 2', k: 'n', l: '△ △ △' },
+              { i: 'K', k: 'k', l: 'Scorpion (R1)' },
+              { i: 'D B 4', k: 's', l: 'Always Outnumbered' },
+              { i: 'F+2 1', k: 'n', l: 'Abertura' },
+              {
+                i: 'D B 3+EX TH',
+                k: 's',
+                l: 'Backstage Pass EX',
+                h: 1,
+                s: 1,
+                n: 'Segure X e aperte L1: troca de lado',
+              },
+              { i: '4 4', k: 'n', l: '○ ○' },
+              { i: 'F+K', k: 'k', l: 'Scorpion (→ + R1)' },
+              { i: 'D B 4', k: 's', l: 'Always Outnumbered' },
+              { i: 'F+2 1', k: 'n', l: '→ △ □ de novo' },
+              { i: 'D F 4+EX', k: 's', l: 'Psychotic Dive EX' },
+              { i: '2 2', k: 'a', l: '△ △ no ar' },
+              { i: 'B+3', k: 'n', l: '← X levanta o oponente' },
+              { i: 'D F 4', k: 'f', l: 'Psychotic Dive' },
+            ],
+          },
+          {
+            id: 'p1',
+            cat: 'p',
+            group: 'Abrir e cancelar',
+            title: 'Abertura',
+            desc: 'Abre quase todos os combos',
+            steps: [{ i: 'F+2 1', k: 'n', l: '→ △ □' }],
+          },
+          {
+            id: 'p2',
+            cat: 'p',
+            group: 'Abrir e cancelar',
+            title: 'Cancelamento em pulo',
+            desc: 'Peça central, segura na defesa',
+            steps: [
+              { i: '2 2 1+3', k: 'n', l: '△ △ e □ + X juntos' },
+              { i: 'U 2 2', k: 'a', l: 'Pulo e △ △ no ar' },
+            ],
+          },
+          {
+            id: 'p3',
+            cat: 'p',
+            group: 'Abrir e cancelar',
+            title: '△ △ △ cancelável',
+            desc: 'Cancela no 3º golpe',
+            steps: [
+              { i: '2 2 2', k: 'n', l: '△ △ △' },
+              { i: 'K', k: 'k', l: 'Scorpion (R1)' },
+            ],
+          },
+          {
+            id: 'p4',
+            cat: 'p',
+            group: 'Abrir e cancelar',
+            title: 'Backstage Pass EX',
+            desc: 'Troca de lado gastando 1 barra',
+            steps: [
+              { i: 'F+2 1', k: 'n', l: 'Abertura' },
+              { i: 'D B 3+EX', k: 's', l: 'Backstage Pass EX', s: 1 },
+              { i: '4 4', k: 'n', l: '○ ○' },
+            ],
+          },
+          {
+            id: 'p5',
+            cat: 'p',
+            group: 'Ligações com Scorpion',
+            title: 'Kameo no meio',
+            desc: 'Chama o Scorpion e cancela',
+            steps: [
+              { i: '4 4', k: 'n', l: '○ ○' },
+              { i: 'F+K', k: 'k', l: 'Scorpion (→ + R1)' },
+              { i: 'D B 4', k: 's', l: 'Always Outnumbered' },
+            ],
+          },
+          {
+            id: 'p6',
+            cat: 'p',
+            group: 'Ligações com Scorpion',
+            title: 'Father Death + Kameo',
+            desc: 'Estende o combo no chão',
+            steps: [
+              { i: 'B D F 1', k: 's', l: 'Father Death' },
+              { i: 'D+K', k: 'k', l: 'Scorpion (↓ + R1)' },
+              { i: '2 2 TH', k: 'n', l: '△ △ e agarrão', s: 1 },
+            ],
+          },
+          {
+            id: 'p7',
+            cat: 'p',
+            group: 'Ligações com Scorpion',
+            title: 'Troca no agarrão',
+            desc: 'Muda de lado e sobe pro ar',
+            steps: [
+              { i: '2 2 TH', k: 'n', l: '△ △ e agarrão', s: 1 },
+              { i: 'UF 2 2', k: 'a', l: 'Pulo pra frente e △ △ no ar' },
+            ],
+          },
+          {
+            id: 'p8',
+            cat: 'p',
+            group: 'Finalizar',
+            title: 'Finalizador padrão',
+            desc: 'Levanta e fecha com Rush + Stab',
+            steps: [{ i: 'B+3', k: 'n', l: '← X levanta o oponente' }, FIN],
+          },
+          {
+            id: 'p9',
+            cat: 'p',
+            group: 'Finalizar',
+            title: 'Final com Dive EX',
+            desc: 'O fim do combo de 2 barras',
+            steps: [
+              { i: 'F+2 1', k: 'n', l: 'Abertura' },
+              { i: 'D F 4+EX', k: 's', l: 'Psychotic Dive EX' },
+              { i: '2 2', k: 'a', l: '△ △ no ar' },
+              { i: 'B+3', k: 'n', l: '← X' },
+              { i: 'D F 4', k: 'f', l: 'Psychotic Dive' },
+            ],
+          },
+        ];
+
+        const $ = (id) => document.getElementById(id);
+        const el = {
+          list: $('list'),
+          name: $('cName'),
+          meta: $('cMeta'),
+          stats: $('cStats'),
+          step: $('nowStep'),
+          input: $('nowInput'),
+          note: $('nowNote'),
+          next: $('nextInput'),
+          lane: $('lane'),
+          notes: $('notes'),
+          prog: $('prog'),
+          play: $('play'),
+          restart: $('restart'),
+          speed: $('speed'),
+          loop: $('loop'),
+          sound: $('sound'),
+          steps: $('steps'),
+          tabC: $('tab-combo'),
+          tabP: $('tab-peca'),
+          legend: $('legend'),
+        };
+        const ICON_PLAY = '<svg viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></svg>';
+        const ICON_PAUSE = '<svg viewBox="0 0 24 24"><path d="M6 4.5h4.5v15H6zM13.5 4.5H18v15h-4.5z"/></svg>';
+
+        let saved = {};
+        try {
+          saved = JSON.parse(localStorage.getItem('gfsc') || '{}') || {};
+        } catch (e) {
+          saved = {};
+        }
+        let cur = null,
+          tl = null,
+          t = -LEAD,
+          playing = false,
+          speed = [0.5, 0.75, 1].includes(saved.speed) ? saved.speed : 1,
+          last = 0;
+        let pos = [],
+          PX = 0.3,
+          hitX = 60,
+          curStep = -9,
+          curNote = -9,
+          lastCount = -1,
+          ended = false,
+          tab = 'c',
+          noteEls = [],
+          stepEls = [],
+          nowToks = [],
+          ac = null;
+        el.loop.checked = !!saved.loop;
+        el.sound.checked = saved.sound !== false;
+
+        function save() {
+          try {
+            localStorage.setItem(
+              'gfsc',
+              JSON.stringify({ id: cur.id, speed, loop: el.loop.checked, sound: el.sound.checked }),
+            );
+          } catch (e) {}
+        }
+        const isDir = (p) => p.every((x) => x in DIR);
+        const isJump = (p) => p.length === 1 && (p[0] === 'U' || p[0] === 'UF');
+        function g(p) {
+          const tl_ = NAME[p] || p;
+          if (FACE[p])
+            return `<span class="g face ${FACE[p][0]}" title="${tl_}" role="img" aria-label="${tl_}"><svg viewBox="0 0 24 24">${FACE[p][1]}</svg></span>`;
+          if (PILL[p]) return `<span class="g pill ${PILL[p][1]}" title="${tl_}">${PILL[p][0]}</span>`;
+          if (p in DIR)
+            return `<span class="g dir" title="${tl_}" role="img" aria-label="${tl_}"><svg viewBox="0 0 24 24" style="transform:rotate(${DIR[p]}deg)"><path d="M5 12h13M13 7l5 5-5 5"/></svg></span>`;
+          return '';
+        }
+        const grp = (parts) => parts.map(g).join('<i class="plus">+</i>');
+        const chips = (input) =>
+          input
+            .split(' ')
+            .map((w) => (w === ',' ? '<i class="sep">,</i>' : `<span class="tk">${grp(w.split('+'))}</span>`))
+            .join('');
+        const noteText = (s) =>
+          s.n || [s.h && 'Segure o botão', s.s && 'Troca de lado'].filter(Boolean).join(', ');
+        const bars = (c) =>
+          c.steps.reduce((a, s) => a + s.i.split(/[ +]/).filter((x) => x === 'EX').length, 0);
+
+        function build(c) {
+          const toks = [],
+            steps = [];
+          let t0 = 0;
+          c.steps.forEach((s, i) => {
+            const prev = c.steps[i - 1];
+            let gap = i ? GAP[s.k] : 0;
+            if (prev) {
+              if (prev.k === 'k') gap += 240;
+              if (prev.s) gap += 260;
+              if (prev.h) gap += 350;
+            }
+            t0 += gap;
+            const start = t0;
+            let lastP = null,
+              comma = false;
+            s.i.split(' ').forEach((w) => {
+              if (w === ',') {
+                comma = true;
+                return;
+              }
+              const parts = w.split('+');
+              if (lastP) t0 += comma ? 300 : isDir(lastP) ? (isJump(lastP) ? 380 : 60) : 170;
+              toks.push({ t: t0, parts, step: i, comma });
+              comma = false;
+              lastP = parts;
+            });
+            steps.push({ start, end: t0 });
+          });
+          const notes = [];
+          toks.forEach((k) => {
+            const p = notes[notes.length - 1];
+            if (p && p.step === k.step && !k.comma && k.t - p.toks[p.toks.length - 1].t <= 60) p.toks.push(k);
+            else notes.push({ step: k.step, t: k.t, toks: [k] });
+          });
+          return { toks, notes, steps, total: t0 };
+        }
+
+        function renderList() {
+          let html = '',
+            gname = '';
+          DATA.filter((c) => c.cat === tab).forEach((c) => {
+            if (c.group !== gname) {
+              gname = c.group;
+              html += `<p class="gh">${c.group}</p>`;
+            }
+            const m =
+              c.cat === 'c'
+                ? `${c.dmg} de dano, ${c.hits} golpes, ${bars(c) === 0 ? 'sem barra' : bars(c) === 1 ? '1 barra' : bars(c) + ' barras'}`
+                : c.desc;
+            html += `<button class="item${cur && cur.id === c.id ? ' on' : ''}" data-id="${c.id}"><span class="it-t">${c.title}</span><span class="it-m">${m}</span></button>`;
+          });
+          el.list.innerHTML = html;
+          el.tabC.setAttribute('aria-selected', tab === 'c');
+          el.tabP.setAttribute('aria-selected', tab === 'p');
+        }
+
+        function select(id) {
+          cur = DATA.find((c) => c.id === id) || DATA[1];
+          tl = build(cur);
+          const b = bars(cur),
+            dur = (tl.total / 1000).toFixed(1).replace('.', ',');
+          el.name.textContent = cur.title;
+          el.meta.textContent =
+            cur.cat === 'c' ? `Combo ${cur.tag} por ${cur.author}${cur.pos ? ', ' + cur.pos : ''}` : cur.desc;
+          const st =
+            cur.cat === 'c'
+              ? [
+                  [cur.dmg, 'de dano'],
+                  [cur.hits, 'golpes'],
+                  [b, b === 1 ? 'barra' : 'barras'],
+                  [dur + ' s', 'em 1x'],
+                ]
+              : [
+                  [cur.steps.length, 'passos'],
+                  [b, b === 1 ? 'barra' : 'barras'],
+                  [dur + ' s', 'em 1x'],
+                ];
+          el.stats.innerHTML = st
+            .map(([v, l]) => `<div class="st"><b>${v}</b><span>${l}</span></div>`)
+            .join('');
+          el.notes.innerHTML = tl.notes
+            .map((n, i) => {
+              const first = !i || tl.notes[i - 1].step !== n.step;
+              return `<div class="note k-${cur.steps[n.step].k}">${first ? `<b class="sn">${n.step + 1}</b>` : ''}${n.toks.map((k) => `<span class="tk">${grp(k.parts)}</span>`).join('')}</div>`;
+            })
+            .join('');
+          noteEls = [...el.notes.children];
+          el.steps.innerHTML = cur.steps
+            .map((s, i) => {
+              const nt = noteText(s);
+              return `<li data-i="${i}" tabindex="0"><span class="num">${i + 1}</span><div><div class="chips">${chips(s.i)}</div><p class="lb">${s.l}${nt ? ` <em>${nt}</em>` : ''}</p></div><span class="kd k-${s.k}">${KIND[s.k]}</span></li>`;
+            })
+            .join('');
+          stepEls = [...el.steps.children];
+          t = -LEAD;
+          playing = false;
+          ended = false;
+          reset();
+          layout();
+          renderList();
+          setPlay();
+          draw();
+          save();
+        }
+
+        function reset() {
+          curStep = -9;
+          curNote = -9;
+          lastCount = -1;
+        }
+
+        function layout() {
+          if (!tl) return;
+          const W = el.lane.clientWidth || 600;
+          PX = Math.min(0.4, Math.max(0.18, W / 1700));
+          hitX = Math.max(56, W * 0.18);
+          el.lane.style.setProperty('--hx', hitX + 'px');
+          pos = [];
+          tl.notes.forEach((n, i) => {
+            if (!i) {
+              pos.push(0);
+              return;
+            }
+            const w = noteEls[i - 1].offsetWidth || 40;
+            pos.push(Math.max(pos[i - 1] + w + 10, pos[i - 1] + (n.t - tl.notes[i - 1].t) * PX));
+          });
+        }
+
+        function offset(time) {
+          const N = tl.notes,
+            L = N.length - 1;
+          if (L < 0) return 0;
+          if (time <= N[0].t) return pos[0] + (time - N[0].t) * PX;
+          for (let i = 0; i < L; i++) {
+            if (time < N[i + 1].t) {
+              const f = (time - N[i].t) / (N[i + 1].t - N[i].t);
+              return pos[i] + f * (pos[i + 1] - pos[i]);
+            }
+          }
+          return pos[L] + (time - N[L].t) * PX;
+        }
+
+        function showStep(si) {
+          const s = cur.steps[si];
+          const toks = tl.toks.filter((k) => k.step === si);
+          el.step.textContent = `Passo ${si + 1} de ${cur.steps.length}: ${s.l}`;
+          el.input.innerHTML = toks
+            .map(
+              (k) =>
+                (k.comma ? '<i class="sep">,</i>' : '') +
+                `<span class="tk" data-t="${k.t}">${grp(k.parts)}</span>`,
+            )
+            .join('');
+          nowToks = [...el.input.querySelectorAll('.tk')].map((e) => ({ e, t: +e.dataset.t }));
+          el.note.textContent = noteText(s);
+          const nx = cur.steps[si + 1];
+          el.next.innerHTML = nx ? `<span>Próximo:</span>${chips(nx.i)}` : '<span>Último passo</span>';
+        }
+
+        function draw() {
+          if (!tl) return;
+          const off = offset(t);
+          noteEls.forEach((e, i) => {
+            e.style.transform = `translate(${(hitX + pos[i] - off).toFixed(1)}px,-50%)`;
+          });
+          let idx = -1;
+          for (let i = 0; i < tl.notes.length; i++) {
+            if (tl.notes[i].t <= t) idx = i;
+            else break;
+          }
+          if (idx !== curNote) {
+            noteEls.forEach((e, i) => {
+              e.classList.toggle('done', i < idx);
+              e.classList.toggle('hot', i === idx);
+            });
+            curNote = idx;
+          }
+          const si = idx >= 0 ? tl.notes[idx].step : -1;
+          if (ended) {
+            if (curStep !== -2) {
+              curStep = -2;
+              el.step.textContent = 'Fim';
+              el.input.innerHTML = '<span class="count">Feito</span>';
+              el.note.textContent =
+                cur.cat === 'c' ? `${cur.dmg} de dano em ${cur.hits} golpes` : 'Peça completa';
+              el.next.innerHTML = '<span>Toque em Tocar para repetir</span>';
+              stepEls.forEach((e) => {
+                e.classList.remove('on');
+                e.classList.add('done');
+              });
+            }
+          } else if (t < 0) {
+            const c = Math.min(3, Math.ceil(-t / (LEAD / 3)));
+            if (curStep !== -1 || c !== lastCount) {
+              curStep = -1;
+              lastCount = c;
+              el.step.textContent = playing ? 'Prepare' : 'Pronto para começar';
+              el.input.innerHTML = playing
+                ? `<span class="count">${c}</span>`
+                : `<span class="count">${ICON_PLAY.replace('<svg', '<svg width="56" height="56" fill="currentColor"')}</span>`;
+              el.note.textContent = '';
+              el.next.innerHTML = `<span>Primeiro:</span>${chips(cur.steps[0].i)}`;
+              stepEls.forEach((e) => e.classList.remove('on', 'done'));
+            }
+          } else if (si !== curStep) {
+            curStep = si;
+            showStep(si);
+            stepEls.forEach((e, i) => {
+              e.classList.toggle('on', i === si);
+              e.classList.toggle('done', i < si);
+            });
+          }
+          if (curStep >= 0)
+            nowToks.forEach((k) => {
+              const on = t >= k.t;
+              k.e.classList.toggle('on', on);
+              k.e.classList.toggle('pop', on && t - k.t < 120);
+            });
+          el.prog.style.width = Math.max(0, Math.min(100, (t / tl.total) * 100)) + '%';
+        }
+
+        function ensureAudio() {
+          if (!ac) {
+            try {
+              ac = new (window.AudioContext || window.webkitAudioContext)();
+            } catch (e) {
+              ac = null;
+            }
+          }
+          if (ac && ac.state === 'suspended') ac.resume().catch(() => {});
+        }
+        function beep(parts) {
+          if (!ac || !el.sound.checked) return;
+          try {
+            const now = ac.currentTime,
+              ty = parts.includes('K') ? 'k' : parts.includes('EX') ? 'ex' : isDir(parts) ? 'd' : 'b';
+            const o = ac.createOscillator(),
+              gn = ac.createGain();
+            o.type = ty === 'ex' ? 'square' : 'triangle';
+            o.frequency.value = { d: 300, b: 740, k: 990, ex: 560 }[ty];
+            gn.gain.setValueAtTime(ty === 'd' ? 0.05 : ty === 'ex' ? 0.06 : 0.13, now);
+            gn.gain.exponentialRampToValueAtTime(0.0001, now + (ty === 'd' ? 0.04 : 0.09));
+            o.connect(gn).connect(ac.destination);
+            o.start(now);
+            o.stop(now + 0.1);
+          } catch (e) {}
+        }
+
+        function tick(ts) {
+          if (!playing) return;
+          const dt = Math.min(64, ts - last);
+          last = ts;
+          const prev = t;
+          t += dt * speed;
+          if (t > prev)
+            tl.toks.forEach((k) => {
+              if (k.t > prev && k.t <= t) beep(k.parts);
+            });
+          if (t > tl.total + 600) {
+            if (el.loop.checked) {
+              t = -LEAD * 0.75;
+              reset();
+            } else {
+              t = tl.total + 600;
+              playing = false;
+              ended = true;
+              setPlay();
+            }
+          }
+          draw();
+          if (playing) requestAnimationFrame(tick);
+        }
+
+        function setPlay() {
+          el.play.innerHTML = playing
+            ? ICON_PAUSE + 'Pausar'
+            : ICON_PLAY + (t > -LEAD && !ended ? 'Continuar' : 'Tocar');
+          el.play.setAttribute('aria-pressed', playing);
+        }
+        function togglePlay() {
+          ensureAudio();
+          if (ended) {
+            t = -LEAD;
+            ended = false;
+            reset();
+          }
+          playing = !playing;
+          if (playing) {
+            last = performance.now();
+            requestAnimationFrame(tick);
+          }
+          if (t < 0) reset();
+          setPlay();
+          draw();
+        }
+        function seek(time) {
+          t = time;
+          ended = false;
+          reset();
+          setPlay();
+          draw();
+        }
+        function setSpeed(s) {
+          speed = s;
+          [...el.speed.children].forEach((b) => b.setAttribute('aria-pressed', +b.dataset.s === s));
+          save();
+        }
+
+        el.play.addEventListener('click', togglePlay);
+        el.restart.addEventListener('click', () => {
+          ensureAudio();
+          t = -LEAD;
+          ended = false;
+          reset();
+          if (!playing) {
+            playing = true;
+            last = performance.now();
+            requestAnimationFrame(tick);
+          }
+          setPlay();
+          draw();
+        });
+        el.speed.addEventListener('click', (e) => {
+          const b = e.target.closest('button');
+          if (b) setSpeed(+b.dataset.s);
+        });
+        el.loop.addEventListener('change', save);
+        el.sound.addEventListener('change', save);
+        el.list.addEventListener('click', (e) => {
+          const b = e.target.closest('.item');
+          if (b) select(b.dataset.id);
+        });
+        el.tabC.addEventListener('click', () => {
+          tab = 'c';
+          renderList();
+        });
+        el.tabP.addEventListener('click', () => {
+          tab = 'p';
+          renderList();
+        });
+        const goStep = (e) => {
+          const li = e.target.closest('li');
+          if (li && tl) seek(tl.steps[+li.dataset.i].start - 250);
+        };
+        el.steps.addEventListener('click', goStep);
+        el.steps.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            goStep(e);
+          }
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.code === 'Space' && e.target === document.body) {
+            e.preventDefault();
+            togglePlay();
+          }
+        });
+        const ro = new ResizeObserver(() => {
+          layout();
+          draw();
+        });
+        ro.observe(el.lane);
+
+        el.legend.innerHTML = ['1', '2', '3', '4', 'K', 'EX', 'TH', 'F', 'B', 'D', 'U', 'UF']
+          .map((p) => `<div>${g(p)}<span>${NAME[p]}</span></div>`)
+          .join('');
+        const start = DATA.find((c) => c.id === saved.id) ? saved.id : 'c469';
+        tab = start[0] === 'p' ? 'p' : 'c';
+        setSpeed(speed);
+        select(start);
+      }
+    </script>
+  </body>
+</html>

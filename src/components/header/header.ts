@@ -9,6 +9,7 @@ import '../icon/icon.ts';
 import '../theme-toggle/theme-toggle.ts';
 
 /**
+ * @fires sign-in - The user asked to sign in with Google.
  * @fires sign-out - The user asked to sign out.
  */
 @customElement('app-header')
@@ -18,7 +19,7 @@ export class AppHeader extends LitElement {
     css`
       :host {
         display: block;
-        border-block-end: 1px solid var(--color-border-default);
+        border-block-end: 1px solid var(--color-border-brand-subtle);
         background: var(--color-bg-default);
       }
 
@@ -35,9 +36,12 @@ export class AppHeader extends LitElement {
 
       .brand {
         margin: 0;
-        color: var(--color-content-strong);
-        font-size: var(--typography-body-md-size);
-        font-weight: var(--typography-title-weight);
+        color: var(--color-content-brand);
+        font-family: var(--typography-font-family-display);
+        font-size: var(--typography-title-sm-size);
+        font-weight: var(--typography-display-weight);
+        letter-spacing: var(--typography-display-letter-spacing);
+        text-transform: uppercase;
       }
 
       .actions {
@@ -64,6 +68,13 @@ export class AppHeader extends LitElement {
 
   @property() brand = '';
   @property({ attribute: false }) user: AuthUser | null = null;
+  /** Shows the "Entrar" button (signed out, with auth configured). */
+  @property({ type: Boolean, attribute: 'can-sign-in' }) canSignIn = false;
+  @property({ type: Boolean }) pending = false;
+
+  private requestSignIn(): void {
+    this.dispatchEvent(new CustomEvent('sign-in', { bubbles: true, composed: true }));
+  }
 
   private requestSignOut(): void {
     this.dispatchEvent(new CustomEvent('sign-out', { bubbles: true, composed: true }));
@@ -84,12 +95,24 @@ export class AppHeader extends LitElement {
     `;
   }
 
+  private renderSignIn() {
+    return html`<app-button
+      variant="secondary"
+      size="sm"
+      ?loading=${this.pending}
+      @click=${this.requestSignIn}
+    >
+      <app-icon slot="icon-start" name="log-in"></app-icon>
+      Entrar
+    </app-button>`;
+  }
+
   override render() {
     return html`
       <header class="container">
         <p class="brand">${this.brand}</p>
         <div class="actions">
-          ${this.user ? this.renderUser(this.user) : nothing}
+          ${this.user ? this.renderUser(this.user) : this.canSignIn ? this.renderSignIn() : nothing}
           <app-theme-toggle></app-theme-toggle>
         </div>
       </header>
@@ -103,6 +126,7 @@ declare global {
   }
 
   interface HTMLElementEventMap {
+    'sign-in': CustomEvent<void>;
     'sign-out': CustomEvent<void>;
   }
 }

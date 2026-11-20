@@ -1,14 +1,24 @@
-# Template Vite Web Components
+# Receba
 
-Starter com Vite, TypeScript, Web Components (Lit), tokens CSS, login Google (Firebase Auth) e semantic-release.
+Treino de combos de Mortal Kombat 1 com a sequência de botões no tempo certo.
 
-<!-- template:remove:start -->
+## Treino de combos
 
-> **Este repositório é um template.** Crie projetos a partir dele pelo `repo-setup` (issue form) ou pelo botão **Use this template** do GitHub. Este bloco é removido automaticamente quando o projeto é inicializado pelo `repo-setup`.
->
-> O que o `repo-setup` ajusta na inicialização está declarado em [`.template/manifest.json`](.template/manifest.json): nome, título e descrição do projeto, versão zerada e remoção dos arquivos que só fazem sentido no template.
+Ghostface com Kameo Scorpion, no controle de PS5. Escolha um combo e toque em **Tocar**: a tela mostra cada botão no momento de apertar.
 
-<!-- template:remove:end -->
+- **Trilha estilo jogo de ritmo:** as notas andam até a linha "agora" e cruzam no tempo de cada input.
+- **Passo atual em destaque**, com a nota do passo e o próximo, e a lista numerada (clique num passo para pular para ele).
+- **Contagem 3, 2, 1**, velocidade 0,5x / 0,75x / 1x, repetição, **cliques dos botões** e **metrônomo** (90 / 120 / 150 BPM, a contagem cai nos tempos e o primeiro input no tempo forte).
+- Espaço toca e pausa. Velocidade, sons, metrônomo e o último combo ficam salvos no navegador.
+- Combos da comunidade [mk1kombo](https://mk1kombo.kagewebsite.com/combos-ghostface/all/), com o autor indicado em cada um.
+
+O ritmo é aproximado (o tempo exato depende do hitstun): comece em 0,5x e ajuste no Modo Treino. A especificação completa está em [`docs/combo-trainer/SPEC.md`](docs/combo-trainer/SPEC.md).
+
+Onde mexer:
+
+- **Combos:** `src/data/ghostface-scorpion.ts`, em notação universal (`1 2 3 4`, `F B U D UF`, `K EX TH`, `+` junta botões, `,` é pausa). Textos aceitam notação entre colchetes: `Pulo e [2 2] no ar`.
+- **Como cada botão aparece:** `src/lib/combo/controller-layout.ts` (`ps5Layout`) é a única fonte de verdade. Nenhum componente digita símbolos de botão.
+- **Ritmo:** `timing` em `src/lib/combo/timeline.ts`. **Relógio e áudio:** `src/controllers/playback.controller.ts` e `src/lib/audio/`.
 
 ## Stack
 
@@ -111,7 +121,7 @@ Os tokens vivem em CSS custom properties e atravessam o Shadow DOM naturalmente.
 
 Tema:
 
-- Por padrão segue o sistema operacional (`prefers-color-scheme`).
+- Por padrão o app é escuro (visual do Mortal Kombat 1); o tema claro é o "pergaminho".
 - `data-theme="light" | "dark"` no `<html>` força um tema; também funciona em qualquer elemento para tematizar só aquele trecho.
 - O `app-theme-toggle` salva a escolha em `localStorage` (`app:theme`) e um script inline no `index.html` restaura antes do primeiro paint, sem flash.
 - Cada token de cor declara os dois valores uma única vez com `light-dark()`; o build gera fallback para navegadores antigos.

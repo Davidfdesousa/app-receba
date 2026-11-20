@@ -2,6 +2,9 @@ export type Theme = 'light' | 'dark';
 
 export const themeStorageKey = 'app:theme';
 
+/** Theme used when the user has not picked one. The app is dark by design (Mortal Kombat 1 look). */
+export const defaultTheme: Theme = 'dark';
+
 function isTheme(value: unknown): value is Theme {
   return value === 'light' || value === 'dark';
 }
@@ -27,14 +30,14 @@ export function getSystemTheme(): Theme {
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
-/** The theme currently in effect: the explicit choice on <html>, otherwise the OS preference. */
+/** The theme currently in effect: the explicit choice on <html>, otherwise the app default. */
 export function getActiveTheme(root: HTMLElement = document.documentElement): Theme {
   const explicit = root.dataset.theme;
-  return isTheme(explicit) ? explicit : getSystemTheme();
+  return isTheme(explicit) ? explicit : defaultTheme;
 }
 
 /**
- * Forces a theme on <html>. Without an explicit theme the page follows the OS.
+ * Forces a theme on <html>. Without an explicit theme the page uses `defaultTheme`.
  * The saved choice is restored before first paint by an inline script in index.html,
  * which must use the same storage key as `themeStorageKey`.
  */

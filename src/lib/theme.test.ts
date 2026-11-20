@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
-import { applyTheme, getActiveTheme, readStoredTheme, storeTheme, themeStorageKey } from './theme.ts';
+import {
+  applyTheme,
+  defaultTheme,
+  getActiveTheme,
+  readStoredTheme,
+  storeTheme,
+  themeStorageKey,
+} from './theme.ts';
 
 describe('theme', () => {
   it('persists and reads back a valid theme', () => {
@@ -30,6 +37,11 @@ describe('theme', () => {
     applyTheme('dark');
 
     expect(document.documentElement.dataset.theme).toBe('dark');
+    expect(getActiveTheme()).toBe('dark');
+  });
+
+  it('falls back to the dark default without an explicit theme', () => {
+    expect(defaultTheme).toBe('dark');
     expect(getActiveTheme()).toBe('dark');
   });
 });
