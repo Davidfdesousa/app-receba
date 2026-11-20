@@ -1,2 +1,9 @@
+import '@fontsource-variable/cinzel/wght.css';
+import '@fontsource/saira-condensed/500.css';
+import '@fontsource/saira-condensed/600.css';
+import '@fontsource/saira-condensed/700.css';
+import '@fontsource/saira-semi-condensed/400.css';
+import '@fontsource/saira-semi-condensed/500.css';
+import '@fontsource/saira-semi-condensed/600.css';
 import './styles/global.css';
 import './app/app-root.ts';

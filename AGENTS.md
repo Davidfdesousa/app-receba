@@ -1,4 +1,4 @@
-# AGENTS.md — template-vite-webcomponents
+# AGENTS.md — app-receba
 
 Guidance for AI coding agents working in this repository.
 

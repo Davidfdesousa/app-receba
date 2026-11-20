@@ -2,22 +2,22 @@
  * Semantic tokens — the only tokens components should consume.
  *
  * Naming: --{category}-{role}-{variant}
- *   category · color | spacing | typography | radius | shadow
+ *   category · color | gradient | spacing | typography | radius | shadow
  *   role     · bg | content | border (color) · stack | inline | inset (spacing)
  *   variant  · default | subtle | muted | strong | intense | hover | pressed
  *
  * Theming uses CSS light-dark(): each color token declares its light and dark
- * value once, and the active `color-scheme` picks one. The scheme follows the
- * OS by default and can be forced with [data-theme='light' | 'dark'] on <html>
- * or on any element to theme just that subtree. Because color-scheme inherits,
- * this also works inside Shadow DOM.
+ * value once, and the active `color-scheme` picks one. The app is dark by default
+ * (the Mortal Kombat 1 look); [data-theme='light'] switches to the parchment theme.
+ * The scheme can be forced on <html> or on any element to theme just that subtree.
+ * Because color-scheme inherits, this also works inside Shadow DOM.
  *
  * The color block is scoped to `:root, [data-theme]` on purpose: the production
  * build lowers light-dark() for older browsers, and that fallback resolves at the
  * element where the token is declared, so each themed subtree must redeclare it.
  */
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
 }
 
 [data-theme='light'] {
@@ -31,44 +31,97 @@
 :root,
 [data-theme] {
   /* Color · background */
-  --color-bg-default: light-dark(var(--palette-neutral-0), var(--palette-neutral-900));
-  --color-bg-subtle: light-dark(var(--palette-neutral-50), var(--palette-neutral-950));
-  --color-bg-muted: light-dark(var(--palette-neutral-100), var(--palette-neutral-800));
-  --color-bg-strong: light-dark(var(--palette-neutral-200), var(--palette-neutral-700));
-  --color-bg-intense: light-dark(var(--palette-neutral-900), var(--palette-neutral-50));
-  --color-bg-neutral-hover: light-dark(var(--palette-neutral-100), var(--palette-neutral-800));
-  --color-bg-neutral-pressed: light-dark(var(--palette-neutral-200), var(--palette-neutral-700));
-  --color-bg-brand: light-dark(var(--palette-brand-600), var(--palette-brand-400));
-  --color-bg-brand-hover: light-dark(var(--palette-brand-700), var(--palette-brand-300));
-  --color-bg-brand-pressed: light-dark(var(--palette-brand-800), var(--palette-brand-200));
-  --color-bg-brand-subtle: light-dark(var(--palette-brand-50), var(--palette-brand-900));
-  --color-bg-danger-subtle: light-dark(var(--palette-red-50), var(--palette-red-900));
-  --color-bg-success-subtle: light-dark(var(--palette-green-50), var(--palette-green-900));
+  --color-bg-default: light-dark(var(--palette-bone-50), var(--palette-obsidian-900));
+  --color-bg-subtle: light-dark(var(--palette-bone-100), var(--palette-obsidian-1000));
+  --color-bg-muted: light-dark(var(--palette-bone-200), var(--palette-obsidian-800));
+  --color-bg-strong: light-dark(var(--palette-bone-300), var(--palette-obsidian-700));
+  --color-bg-intense: light-dark(var(--palette-obsidian-900), var(--palette-bone-100));
+  --color-bg-neutral-hover: light-dark(var(--palette-bone-200), var(--palette-obsidian-800));
+  --color-bg-neutral-pressed: light-dark(var(--palette-bone-300), var(--palette-obsidian-700));
+  --color-bg-brand: light-dark(var(--palette-gold-600), var(--palette-gold-400));
+  --color-bg-brand-hover: light-dark(var(--palette-gold-700), var(--palette-gold-300));
+  --color-bg-brand-pressed: light-dark(var(--palette-gold-800), var(--palette-gold-500));
+  --color-bg-brand-subtle: light-dark(var(--palette-gold-100), var(--palette-gold-900));
+  --color-bg-accent-subtle: light-dark(var(--palette-bone-100), var(--palette-ember-900));
+  --color-bg-danger-subtle: light-dark(var(--palette-bone-100), var(--palette-blood-900));
+  --color-bg-success-subtle: light-dark(var(--palette-bone-100), var(--palette-jade-900));
+  --color-bg-track: light-dark(var(--palette-bone-200), var(--palette-obsidian-950));
 
   /* Color · content (text and icons) */
-  --color-content-default: light-dark(var(--palette-neutral-900), var(--palette-neutral-100));
-  --color-content-strong: light-dark(var(--palette-neutral-950), var(--palette-neutral-0));
-  --color-content-subtle: light-dark(var(--palette-neutral-600), var(--palette-neutral-300));
-  --color-content-muted: light-dark(var(--palette-neutral-500), var(--palette-neutral-400));
-  --color-content-on-intense: light-dark(var(--palette-neutral-0), var(--palette-neutral-950));
-  --color-content-on-brand: light-dark(var(--palette-neutral-0), var(--palette-neutral-950));
-  --color-content-brand: light-dark(var(--palette-brand-600), var(--palette-brand-300));
-  --color-content-danger: light-dark(var(--palette-red-700), var(--palette-red-400));
-  --color-content-success: light-dark(var(--palette-green-700), var(--palette-green-400));
+  --color-content-default: light-dark(var(--palette-obsidian-800), var(--palette-bone-100));
+  --color-content-strong: light-dark(var(--palette-obsidian-1000), var(--palette-bone-0));
+  --color-content-subtle: light-dark(var(--palette-obsidian-600), var(--palette-bone-300));
+  --color-content-muted: light-dark(var(--palette-obsidian-500), var(--palette-bone-400));
+  --color-content-on-intense: light-dark(var(--palette-bone-0), var(--palette-obsidian-1000));
+  --color-content-on-brand: light-dark(var(--palette-bone-0), var(--palette-obsidian-1000));
+  --color-content-brand: light-dark(var(--palette-gold-700), var(--palette-gold-300));
+  --color-content-accent: light-dark(var(--palette-ember-700), var(--palette-ember-400));
+  --color-content-danger: light-dark(var(--palette-blood-600), var(--palette-blood-400));
+  --color-content-success: light-dark(var(--palette-jade-700), var(--palette-jade-400));
 
   /* Color · border */
-  --color-border-default: light-dark(var(--palette-neutral-200), var(--palette-neutral-800));
-  --color-border-strong: light-dark(var(--palette-neutral-300), var(--palette-neutral-700));
-  --color-border-focus: light-dark(var(--palette-brand-500), var(--palette-brand-400));
-  --color-border-danger: light-dark(var(--palette-red-500), var(--palette-red-400));
+  --color-border-default: light-dark(var(--palette-bone-300), var(--palette-obsidian-700));
+  --color-border-strong: light-dark(var(--palette-bone-400), var(--palette-obsidian-600));
+  --color-border-brand: light-dark(var(--palette-gold-600), var(--palette-gold-500));
+  --color-border-brand-subtle: light-dark(var(--palette-gold-300), var(--palette-gold-800));
+  --color-border-focus: light-dark(var(--palette-gold-700), var(--palette-gold-300));
+  --color-border-danger: light-dark(var(--palette-blood-500), var(--palette-blood-400));
+
+  /* Color · controller inputs (caps stay dark in both themes, like the pad) */
+  --color-bg-input-cap: light-dark(var(--palette-obsidian-800), var(--palette-obsidian-700));
+  --color-bg-input-cap-direction: light-dark(var(--palette-obsidian-700), var(--palette-obsidian-600));
+  --color-border-input-cap: light-dark(var(--palette-obsidian-1000), var(--palette-obsidian-1000));
+  --color-content-input-direction: light-dark(var(--palette-bone-50), var(--palette-bone-100));
+  --color-content-input-triangle: light-dark(
+    var(--palette-controller-triangle),
+    var(--palette-controller-triangle)
+  );
+  --color-content-input-circle: light-dark(
+    var(--palette-controller-circle),
+    var(--palette-controller-circle)
+  );
+  --color-content-input-cross: light-dark(var(--palette-controller-cross), var(--palette-controller-cross));
+  --color-content-input-square: light-dark(
+    var(--palette-controller-square),
+    var(--palette-controller-square)
+  );
+  --color-bg-input-kameo: light-dark(var(--palette-gold-400), var(--palette-gold-400));
+  --color-content-on-input-kameo: light-dark(var(--palette-obsidian-1000), var(--palette-obsidian-1000));
+  --color-bg-input-amplify: light-dark(var(--palette-blood-500), var(--palette-blood-500));
+  --color-content-on-input-amplify: light-dark(var(--palette-bone-0), var(--palette-bone-0));
+  --color-bg-input-grab: light-dark(var(--palette-obsidian-500), var(--palette-obsidian-500));
+  --color-content-on-input-grab: light-dark(var(--palette-bone-0), var(--palette-bone-0));
+  --color-content-input-joiner: light-dark(var(--palette-obsidian-500), var(--palette-bone-400));
+
+  /* Color · combo step kinds */
+  --color-content-step-normal: light-dark(var(--palette-obsidian-500), var(--palette-bone-400));
+  --color-content-step-special: light-dark(var(--palette-ember-700), var(--palette-ember-300));
+  --color-content-step-kameo: light-dark(var(--palette-gold-700), var(--palette-gold-300));
+  --color-content-step-air: light-dark(var(--palette-controller-cross-ink), var(--palette-controller-cross));
+  --color-content-step-finisher: light-dark(var(--palette-blood-600), var(--palette-blood-300));
 
   /* Color · shadow */
-  --color-shadow-subtle: light-dark(oklch(21% 0.012 265 / 0.06), oklch(0% 0 0 / 0.35));
-  --color-shadow-strong: light-dark(oklch(21% 0.012 265 / 0.1), oklch(0% 0 0 / 0.5));
+  --color-shadow-subtle: light-dark(oklch(25% 0.02 70 / 0.08), oklch(0% 0 0 / 0.4));
+  --color-shadow-strong: light-dark(oklch(25% 0.02 70 / 0.14), oklch(0% 0 0 / 0.6));
+
+  /* Gradient */
+  --gradient-brand-metal: linear-gradient(
+    180deg,
+    light-dark(var(--palette-gold-500), var(--palette-gold-100)) 0%,
+    light-dark(var(--palette-gold-600), var(--palette-gold-300)) 45%,
+    light-dark(var(--palette-gold-800), var(--palette-gold-600)) 100%
+  );
+  --gradient-surface-glow: radial-gradient(
+    120% 90% at 50% 0%,
+    light-dark(var(--palette-bone-0), var(--palette-obsidian-800)) 0%,
+    light-dark(var(--palette-bone-50), var(--palette-obsidian-900)) 70%
+  );
 
   /* Elevation */
   --shadow-sm: 0 1px 2px var(--color-shadow-subtle);
   --shadow-md: 0 4px 12px var(--color-shadow-strong), 0 1px 3px var(--color-shadow-subtle);
+  --shadow-input-cap:
+    inset 0 -3px 0 oklch(0% 0 0 / 0.45), inset 0 1px 0 oklch(100% 0 0 / 0.1), 0 1px 2px oklch(0% 0 0 / 0.3);
 }
 
 /* Theme-independent semantic tokens */
@@ -98,29 +151,52 @@
 
   /* Typography */
   --typography-font-family-base: var(--font-family-sans);
+  --typography-font-family-display: var(--font-family-display);
+  --typography-font-family-ui: var(--font-family-condensed);
   --typography-font-family-code: var(--font-family-mono);
 
   --typography-body-sm-size: var(--font-size-100);
   --typography-body-md-size: var(--font-size-200);
   --typography-body-line-height: var(--line-height-normal);
 
+  --typography-display-lg-size: clamp(var(--font-size-700), 5vw, var(--font-size-1000));
+  --typography-display-md-size: clamp(var(--font-size-500), 3.4vw, var(--font-size-700));
+  /* Count-in and result figures, as tall as the large input glyphs */
+  --typography-display-xl-size: clamp(var(--font-size-1000), 9vw, var(--font-size-1400));
+  --typography-display-weight: var(--font-weight-bold);
+  --typography-display-line-height: var(--line-height-tight);
+  --typography-display-letter-spacing: var(--letter-spacing-wide);
+
   --typography-title-sm-size: var(--font-size-400);
   --typography-title-md-size: var(--font-size-500);
   --typography-title-lg-size: var(--font-size-700);
   --typography-title-weight: var(--font-weight-semibold);
-  --typography-title-line-height: var(--line-height-tight);
+  --typography-title-line-height: var(--typography-display-line-height);
+
+  --typography-figure-size: var(--font-size-600);
+  --typography-figure-weight: var(--font-weight-bold);
 
   --typography-label-size: var(--font-size-100);
-  --typography-label-weight: var(--font-weight-medium);
+  --typography-label-weight: var(--font-weight-semibold);
+  --typography-label-letter-spacing: var(--letter-spacing-wide);
+  --typography-caption-size: var(--font-size-75);
 
   /* Shape */
-  --radius-control: var(--radius-md);
-  --radius-surface: var(--radius-lg);
+  --radius-control: var(--radius-xs);
+  --radius-surface: var(--radius-sm);
+  --radius-input-cap: var(--radius-full);
+  --radius-input-direction: var(--radius-md);
+
+  /* Controller input sizes */
+  --size-input-inline: 1.375em;
+  --size-input-sm: var(--size-700);
+  --size-input-md: var(--size-800);
+  --size-input-lg: clamp(var(--size-1200), 7vw, var(--size-1800));
 
   /* Focus */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
 
   /* Layout */
-  --layout-content-max-width: 72rem;
+  --layout-content-max-width: 77.5rem;
 }

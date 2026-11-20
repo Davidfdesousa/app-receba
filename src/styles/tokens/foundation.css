@@ -2,49 +2,70 @@
  * Foundation tokens — raw values with no meaning attached.
  * Components must NOT use these directly: consume semantic tokens instead
  * (see semantic.css). Foundation exists so themes have a single palette to map from.
+ *
+ * The palette follows the Mortal Kombat 1 look: warm obsidian blacks, bone text,
+ * engraved gold trim, ember orange and blood red. Controller hues mirror the
+ * PlayStation face buttons so every input reads the same everywhere in the app.
  */
 :root {
-  /* Palette · neutral */
-  --palette-neutral-0: oklch(100% 0 0);
-  --palette-neutral-50: oklch(98.5% 0.003 265);
-  --palette-neutral-100: oklch(96.5% 0.005 265);
-  --palette-neutral-200: oklch(92.5% 0.008 265);
-  --palette-neutral-300: oklch(86.5% 0.012 265);
-  --palette-neutral-400: oklch(71% 0.016 265);
-  --palette-neutral-500: oklch(55.5% 0.018 265);
-  --palette-neutral-600: oklch(44.5% 0.018 265);
-  --palette-neutral-700: oklch(37% 0.016 265);
-  --palette-neutral-800: oklch(27.5% 0.014 265);
-  --palette-neutral-900: oklch(21% 0.012 265);
-  --palette-neutral-950: oklch(15.5% 0.01 265);
-  --palette-neutral-1000: oklch(0% 0 0);
+  /* Palette · obsidian (warm blacks, dark surfaces) */
+  --palette-obsidian-500: oklch(45% 0.018 70);
+  --palette-obsidian-600: oklch(36% 0.017 70);
+  --palette-obsidian-700: oklch(28.5% 0.016 70);
+  --palette-obsidian-800: oklch(22.5% 0.014 70);
+  --palette-obsidian-900: oklch(18% 0.012 70);
+  --palette-obsidian-950: oklch(13.5% 0.01 70);
+  --palette-obsidian-1000: oklch(9% 0.008 70);
 
-  /* Palette · brand */
-  --palette-brand-50: oklch(96.5% 0.018 275);
-  --palette-brand-100: oklch(93% 0.036 275);
-  --palette-brand-200: oklch(87% 0.065 275);
-  --palette-brand-300: oklch(78% 0.11 275);
-  --palette-brand-400: oklch(67% 0.16 275);
-  --palette-brand-500: oklch(58% 0.2 275);
-  --palette-brand-600: oklch(51% 0.22 275);
-  --palette-brand-700: oklch(44.5% 0.2 275);
-  --palette-brand-800: oklch(38% 0.16 275);
-  --palette-brand-900: oklch(31% 0.12 275);
+  /* Palette · bone (warm whites, parchment) */
+  --palette-bone-0: oklch(99% 0.006 85);
+  --palette-bone-50: oklch(97% 0.014 85);
+  --palette-bone-100: oklch(93.5% 0.022 85);
+  --palette-bone-200: oklch(88.5% 0.03 85);
+  --palette-bone-300: oklch(80% 0.034 85);
+  --palette-bone-400: oklch(69% 0.032 80);
+  --palette-bone-500: oklch(58% 0.028 75);
 
-  /* Palette · red */
-  --palette-red-50: oklch(97% 0.013 25);
-  --palette-red-100: oklch(93.5% 0.03 25);
-  --palette-red-400: oklch(70% 0.17 25);
-  --palette-red-500: oklch(63.5% 0.21 25);
-  --palette-red-700: oklch(50.5% 0.19 25);
-  --palette-red-900: oklch(30% 0.09 25);
+  /* Palette · gold (engraved metal trim) */
+  --palette-gold-100: oklch(94% 0.06 90);
+  --palette-gold-200: oklch(89% 0.09 88);
+  --palette-gold-300: oklch(83% 0.12 82);
+  --palette-gold-400: oklch(76% 0.135 78);
+  --palette-gold-500: oklch(67% 0.13 72);
+  --palette-gold-600: oklch(56% 0.115 68);
+  --palette-gold-700: oklch(46% 0.095 65);
+  --palette-gold-800: oklch(35% 0.07 62);
+  --palette-gold-900: oklch(25% 0.045 60);
 
-  /* Palette · green */
-  --palette-green-50: oklch(97.5% 0.02 150);
-  --palette-green-100: oklch(95% 0.05 150);
-  --palette-green-400: oklch(79% 0.17 150);
-  --palette-green-700: oklch(52.5% 0.13 150);
-  --palette-green-900: oklch(30% 0.06 150);
+  /* Palette · ember (fire orange) */
+  --palette-ember-300: oklch(80% 0.15 58);
+  --palette-ember-400: oklch(72% 0.18 50);
+  --palette-ember-500: oklch(65% 0.2 42);
+  --palette-ember-700: oklch(48% 0.16 38);
+  --palette-ember-900: oklch(28% 0.08 40);
+
+  /* Palette · blood (deep red) */
+  --palette-blood-300: oklch(76% 0.13 25);
+  --palette-blood-400: oklch(66% 0.19 27);
+  --palette-blood-500: oklch(58% 0.21 28);
+  --palette-blood-600: oklch(50% 0.19 28);
+  --palette-blood-700: oklch(42% 0.16 27);
+  --palette-blood-900: oklch(25% 0.08 25);
+
+  /* Palette · jade (success) */
+  --palette-jade-400: oklch(78% 0.14 160);
+  --palette-jade-700: oklch(50% 0.11 160);
+  --palette-jade-900: oklch(27% 0.05 160);
+
+  /* Palette · controller (PlayStation face buttons) */
+  --palette-controller-triangle: oklch(78% 0.13 170);
+  --palette-controller-circle: oklch(68% 0.19 20);
+  --palette-controller-cross: oklch(71% 0.13 262);
+  --palette-controller-square: oklch(77% 0.13 345);
+  --palette-controller-triangle-ink: oklch(48% 0.1 170);
+  --palette-controller-circle-ink: oklch(50% 0.17 20);
+  --palette-controller-cross-ink: oklch(48% 0.14 262);
+  --palette-controller-square-ink: oklch(52% 0.15 345);
 
   /* Size scale (base 4px) */
   --size-0: 0;
@@ -55,37 +76,53 @@
   --size-400: 1rem;
   --size-500: 1.25rem;
   --size-600: 1.5rem;
+  --size-700: 1.75rem;
   --size-800: 2rem;
   --size-1000: 2.5rem;
   --size-1200: 3rem;
+  --size-1400: 3.5rem;
   --size-1600: 4rem;
+  --size-1800: 4.5rem;
 
   /* Typography */
+  --font-family-display: 'Cinzel Variable', 'Cinzel', 'Trajan Pro', Georgia, serif;
+  --font-family-condensed: 'Saira Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif;
   --font-family-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    'Saira Semi Condensed', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
   --font-family-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
 
-  --font-size-75: 0.75rem;
+  --font-size-75: 0.8125rem;
   --font-size-100: 0.875rem;
   --font-size-200: 1rem;
   --font-size-300: 1.125rem;
   --font-size-400: 1.25rem;
   --font-size-500: 1.5rem;
+  --font-size-600: 1.75rem;
   --font-size-700: 2rem;
+  --font-size-900: 2.75rem;
+  --font-size-1000: 3.25rem;
+  --font-size-1400: 4.5rem;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
+  --font-weight-black: 900;
 
-  --line-height-tight: 1.2;
+  --line-height-tight: 1.1;
+  --line-height-snug: 1.3;
   --line-height-normal: 1.5;
 
-  /* Radius */
+  --letter-spacing-none: 0;
+  --letter-spacing-wide: 0.06em;
+  --letter-spacing-wider: 0.12em;
+
+  /* Radius — MK1 trims are sharp; only controller caps are round */
+  --radius-xs: 0.125rem;
   --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
   --radius-full: 999px;
 
   /* Motion */

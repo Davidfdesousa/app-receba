@@ -1,6 +1,6 @@
 export const appConfig = {
-  name: 'template-vite-webcomponents',
-  title: 'Template Vite Web Components',
+  name: 'app-receba',
+  title: 'Receba',
 } as const;
 
 export type AppConfig = typeof appConfig;

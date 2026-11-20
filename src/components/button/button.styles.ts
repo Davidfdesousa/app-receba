@@ -36,10 +36,12 @@ export const buttonStyles = css`
     border-radius: var(--radius-control);
     background: var(--_bg);
     color: var(--_content);
-    font-family: inherit;
-    font-size: var(--typography-label-size);
+    font-family: var(--typography-font-family-ui);
+    font-size: var(--typography-body-md-size);
     font-weight: var(--typography-label-weight);
-    line-height: var(--line-height-tight);
+    line-height: var(--typography-display-line-height);
+    letter-spacing: var(--typography-label-letter-spacing);
+    text-transform: uppercase;
     white-space: nowrap;
     cursor: pointer;
     user-select: none;
@@ -83,6 +85,7 @@ export const buttonStyles = css`
 
   :host([size='sm']) button {
     min-block-size: 2rem;
+    font-size: var(--typography-label-size);
     padding-block: var(--spacing-inset-xs);
     padding-inline: var(--spacing-inset-sm);
   }

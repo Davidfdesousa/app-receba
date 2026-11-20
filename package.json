@@ -1,8 +1,8 @@
 {
-  "name": "template-vite-webcomponents",
-  "version": "1.0.0",
+  "name": "app-receba",
+  "version": "0.0.0",
   "private": true,
-  "description": "Starter com Vite, TypeScript, Web Components (Lit), tokens CSS, login Google (Firebase Auth) e semantic-release.",
+  "description": "Treino de combos de Mortal Kombat 1 com a sequência de botões no tempo certo.",
   "type": "module",
   "engines": {
     "node": ">=24.12.0"
@@ -24,6 +24,9 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@fontsource-variable/cinzel": "^5.3.0",
+    "@fontsource/saira-condensed": "^5.3.0",
+    "@fontsource/saira-semi-condensed": "^5.3.0",
     "firebase": "^13.2.0",
     "lit": "^3.3.3"
   },
