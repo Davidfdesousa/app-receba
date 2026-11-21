@@ -1,4 +1,5 @@
 import { isMetronomeTempo, type MetronomeTempo } from './audio/metronome.ts';
+import type { DuoSelection } from './roster/roster.types.ts';
 
 export const playbackSpeeds = [0.5, 0.75, 1] as const;
 export type PlaybackSpeed = (typeof playbackSpeeds)[number];
@@ -67,5 +68,42 @@ export function storeTrainerPreferences(
     storage.setItem(trainerStorageKey, JSON.stringify(preferences));
   } catch {
     // Storage can be unavailable (private mode, blocked cookies). Preferences still apply for this visit.
+  }
+}
+
+export const duoStorageKey = 'app:duo';
+
+/** The last duo picked, unvalidated against the roster (see `resolveDuo`), or null. */
+export function readDuoPreference(
+  storage: Pick<Storage, 'getItem'> = localStorage,
+): Partial<DuoSelection> | null {
+  let saved: unknown;
+  try {
+    const raw = storage.getItem(duoStorageKey);
+    if (raw === null) return null;
+    saved = JSON.parse(raw);
+  } catch {
+    return null;
+  }
+
+  if (!isRecord(saved)) return null;
+  const pick = (value: unknown) => (typeof value === 'string' && value ? value : undefined);
+  const fighterId = pick(saved.fighterId);
+  const kameoId = pick(saved.kameoId);
+
+  return {
+    ...(fighterId === undefined ? {} : { fighterId }),
+    ...(kameoId === undefined ? {} : { kameoId }),
+  };
+}
+
+export function storeDuoPreference(
+  selection: DuoSelection,
+  storage: Pick<Storage, 'setItem'> = localStorage,
+): void {
+  try {
+    storage.setItem(duoStorageKey, JSON.stringify(selection));
+  } catch {
+    // Storage can be unavailable. The duo still applies for this visit.
   }
 }

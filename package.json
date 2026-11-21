@@ -2,7 +2,7 @@
   "name": "app-receba",
   "version": "1.0.0",
   "private": true,
-  "description": "Treino de combos de Mortal Kombat 1 com a sequência de botões no tempo certo.",
+  "description": "Receba!! Escolha a dupla de Mortal Kombat 1, aperte play e aprenda cada combo no tempo certo.",
   "type": "module",
   "engines": {
     "node": ">=24.12.0"

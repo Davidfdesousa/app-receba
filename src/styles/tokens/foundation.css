@@ -3,39 +3,36 @@
  * Components must NOT use these directly: consume semantic tokens instead
  * (see semantic.css). Foundation exists so themes have a single palette to map from.
  *
- * The palette follows the Mortal Kombat 1 look: warm obsidian blacks, bone text,
- * engraved gold trim, ember orange and blood red. Controller hues mirror the
- * PlayStation face buttons so every input reads the same everywhere in the app.
+ * The palette follows the Mortal Kombat 1 look: neutral blacks and charcoal (#000,
+ * #1e1e1e), silver lettering, the dragon red (#b10000), fire orange and gold sparks.
+ * Controller hues mirror the PlayStation face buttons so every input reads the same
+ * everywhere in the app.
  */
 :root {
-  /* Palette · obsidian (warm blacks, dark surfaces) */
-  --palette-obsidian-500: oklch(45% 0.018 70);
-  --palette-obsidian-600: oklch(36% 0.017 70);
-  --palette-obsidian-700: oklch(28.5% 0.016 70);
-  --palette-obsidian-800: oklch(22.5% 0.014 70);
-  --palette-obsidian-900: oklch(18% 0.012 70);
-  --palette-obsidian-950: oklch(13.5% 0.01 70);
-  --palette-obsidian-1000: oklch(9% 0.008 70);
+  /* Palette · obsidian (neutral blacks, dark surfaces) */
+  --palette-obsidian-500: oklch(52% 0 0);
+  --palette-obsidian-600: oklch(42% 0 0);
+  --palette-obsidian-700: oklch(33.5% 0 0);
+  --palette-obsidian-800: oklch(27.5% 0 0);
+  --palette-obsidian-900: oklch(23.5% 0 0);
+  --palette-obsidian-950: oklch(17.5% 0 0);
+  --palette-obsidian-1000: oklch(0% 0 0);
 
-  /* Palette · bone (warm whites, parchment) */
-  --palette-bone-0: oklch(99% 0.006 85);
-  --palette-bone-50: oklch(97% 0.014 85);
-  --palette-bone-100: oklch(93.5% 0.022 85);
-  --palette-bone-200: oklch(88.5% 0.03 85);
-  --palette-bone-300: oklch(80% 0.034 85);
-  --palette-bone-400: oklch(69% 0.032 80);
-  --palette-bone-500: oklch(58% 0.028 75);
+  /* Palette · silver (chrome lettering, smoke, light surfaces) */
+  --palette-silver-0: oklch(100% 0 0);
+  --palette-silver-50: oklch(97.5% 0 0);
+  --palette-silver-100: oklch(93.5% 0.001 197);
+  --palette-silver-200: oklch(88.5% 0 0);
+  --palette-silver-300: oklch(78.5% 0 0);
+  --palette-silver-400: oklch(69% 0 0);
+  --palette-silver-500: oklch(58% 0 0);
 
-  /* Palette · gold (engraved metal trim) */
-  --palette-gold-100: oklch(94% 0.06 90);
-  --palette-gold-200: oklch(89% 0.09 88);
-  --palette-gold-300: oklch(83% 0.12 82);
-  --palette-gold-400: oklch(76% 0.135 78);
-  --palette-gold-500: oklch(67% 0.13 72);
-  --palette-gold-600: oklch(56% 0.115 68);
-  --palette-gold-700: oklch(46% 0.095 65);
-  --palette-gold-800: oklch(35% 0.07 62);
-  --palette-gold-900: oklch(25% 0.045 60);
+  /* Palette · gold (sparks and highlights) */
+  --palette-gold-100: oklch(95% 0.05 90);
+  --palette-gold-300: oklch(83% 0.14 85);
+  --palette-gold-400: oklch(77% 0.15 80);
+  --palette-gold-500: oklch(68% 0.14 74);
+  --palette-gold-700: oklch(47% 0.1 66);
 
   /* Palette · ember (fire orange) */
   --palette-ember-300: oklch(80% 0.15 58);
@@ -44,13 +41,17 @@
   --palette-ember-700: oklch(48% 0.16 38);
   --palette-ember-900: oklch(28% 0.08 40);
 
-  /* Palette · blood (deep red) */
+  /* Palette · blood (the dragon red; 600 is #b10000) */
+  --palette-blood-100: oklch(95.5% 0.025 25);
+  --palette-blood-200: oklch(89% 0.06 25);
   --palette-blood-300: oklch(76% 0.13 25);
+  --palette-blood-350: oklch(71% 0.17 27);
   --palette-blood-400: oklch(66% 0.19 27);
-  --palette-blood-500: oklch(58% 0.21 28);
-  --palette-blood-600: oklch(50% 0.19 28);
-  --palette-blood-700: oklch(42% 0.16 27);
-  --palette-blood-900: oklch(25% 0.08 25);
+  --palette-blood-500: oklch(57% 0.21 28);
+  --palette-blood-600: oklch(47.7% 0.197 29);
+  --palette-blood-700: oklch(41% 0.17 28);
+  --palette-blood-800: oklch(33% 0.13 27);
+  --palette-blood-900: oklch(24% 0.08 25);
 
   /* Palette · jade (success) */
   --palette-jade-400: oklch(78% 0.14 160);
@@ -86,9 +87,10 @@
 
   /* Typography */
   --font-family-display: 'Cinzel Variable', 'Cinzel', 'Trajan Pro', Georgia, serif;
-  --font-family-condensed: 'Saira Condensed', 'Arial Narrow', 'Roboto Condensed', sans-serif;
+  --font-family-condensed: 'Saira Condensed', 'Roboto Condensed', 'Arial Narrow', sans-serif;
   --font-family-sans:
-    'Saira Semi Condensed', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    'Saira Semi Condensed', 'Roboto Condensed', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    Arial, sans-serif;
   --font-family-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
 
   --font-size-75: 0.8125rem;
@@ -117,7 +119,7 @@
   --letter-spacing-wide: 0.06em;
   --letter-spacing-wider: 0.12em;
 
-  /* Radius — MK1 trims are sharp; only controller caps are round */
+  /* Radius — MK1 trims are sharp; only controller caps and tags are round */
   --radius-xs: 0.125rem;
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;

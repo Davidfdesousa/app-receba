@@ -36,9 +36,9 @@ export const buttonStyles = css`
     border-radius: var(--radius-control);
     background: var(--_bg);
     color: var(--_content);
-    font-family: var(--typography-font-family-ui);
+    font-family: var(--typography-font-family-label);
     font-size: var(--typography-body-md-size);
-    font-weight: var(--typography-label-weight);
+    font-weight: var(--typography-display-weight);
     line-height: var(--typography-display-line-height);
     letter-spacing: var(--typography-label-letter-spacing);
     text-transform: uppercase;

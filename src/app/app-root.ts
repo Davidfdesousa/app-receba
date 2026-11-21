@@ -5,13 +5,16 @@ import '../components/header/header.ts';
 import '../components/icon/icon.ts';
 import { appConfig } from '../config/app.config.ts';
 import { AuthController } from '../controllers/auth.controller.ts';
-import { ghostfaceScorpion } from '../data/ghostface-scorpion.ts';
+import { DuoController } from '../controllers/duo.controller.ts';
+import { availableDuos, comboSetLoaders } from '../data/combo-sets/index.ts';
+import { defaultDuo, roster } from '../data/roster.ts';
 import '../pages/trainer-page.ts';
 import { baseStyles } from '../styles/shared.styles.ts';
 
 /**
- * Application shell. Owns the auth state. The trainer is public and shows in every
- * auth state; signing in with Google stays available for future features (favourites).
+ * Application shell. Owns the auth state and the picked duo (with its lazily loaded
+ * combos). The trainer is public and shows in every auth state; signing in with Google
+ * stays available for future features (favourites).
  * Pages stay stateless: data goes down as properties, actions come up as events.
  */
 @customElement('app-root')
@@ -60,6 +63,11 @@ export class AppRoot extends LitElement {
   ];
 
   private readonly auth = new AuthController(this);
+  private readonly duo = new DuoController(this, {
+    roster,
+    loaders: comboSetLoaders,
+    fallback: defaultDuo,
+  });
 
   override render() {
     const { state, pending } = this.auth;
@@ -82,7 +90,18 @@ export class AppRoot extends LitElement {
             </div>`
           : nothing
       }
-      <main><app-trainer-page .comboSet=${ghostfaceScorpion}></app-trainer-page></main>
+      <main>
+        <app-trainer-page
+          .roster=${roster}
+          .selection=${this.duo.selection}
+          .availableDuos=${availableDuos}
+          .comboSet=${this.duo.comboSet}
+          status=${this.duo.status}
+          @duo-change=${(event: HTMLElementEventMap['duo-change']) => {
+            this.duo.select(event.detail);
+          }}
+        ></app-trainer-page>
+      </main>
     `;
   }
 }

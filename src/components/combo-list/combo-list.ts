@@ -1,4 +1,4 @@
-import { LitElement, css, html, type PropertyValues } from 'lit';
+import { LitElement, css, html, nothing, type PropertyValues } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 
 import { comboListSummary } from '../../lib/combo/combo-summary.ts';
@@ -26,8 +26,9 @@ function groupCombos(combos: readonly Combo[]): [group: string, combos: Combo[]]
 }
 
 /**
- * Picks a combo. Full combos and practice pieces live in two tabs, grouped by `group`.
- * Below ~860px the list turns into a horizontal strip that scrolls and snaps.
+ * Picks a combo. Full combos and practice pieces live in two tabs (only when the set has
+ * both), grouped by `group`. Mobile first: a horizontal strip that scrolls and snaps,
+ * which becomes a vertical list with group titles from ~860px.
  *
  * @fires combo-select - A combo was chosen. Detail: `{ comboId }`.
  */
@@ -55,8 +56,8 @@ export class AppComboList extends LitElement {
         border-radius: var(--radius-control);
         background: var(--color-bg-default);
         color: var(--color-content-subtle);
-        font-family: var(--typography-font-family-ui);
-        font-size: var(--typography-body-md-size);
+        font-family: var(--typography-font-family-label);
+        font-size: var(--typography-body-sm-size);
         font-weight: var(--typography-label-weight);
         letter-spacing: var(--typography-label-letter-spacing);
         text-transform: uppercase;
@@ -74,11 +75,17 @@ export class AppComboList extends LitElement {
       }
 
       .list {
-        display: grid;
-        gap: var(--spacing-stack-2xs);
+        display: flex;
+        gap: var(--spacing-inline-xs);
+        padding-block-end: var(--spacing-stack-2xs);
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        scroll-snap-type: x proximity;
+        scroll-padding-inline: var(--spacing-inline-2xs);
       }
 
       .group-title {
+        display: none;
         margin-block: var(--spacing-stack-xs) 0;
         margin-inline: var(--spacing-inline-2xs);
         color: var(--color-content-muted);
@@ -95,6 +102,9 @@ export class AppComboList extends LitElement {
 
       .item {
         display: grid;
+        flex: 0 0 12.5rem;
+        align-content: start;
+        scroll-snap-align: start;
         gap: var(--spacing-stack-2xs);
         min-block-size: 2.75rem;
         padding-block: var(--spacing-inset-sm);
@@ -135,25 +145,16 @@ export class AppComboList extends LitElement {
         color: var(--color-content-subtle);
       }
 
-      @media (max-width: 53.75rem) {
+      @media (min-width: 53.75rem) {
         .list {
-          display: flex;
-          gap: var(--spacing-inline-xs);
-          padding-block-end: var(--spacing-stack-2xs);
-          overflow-x: auto;
-          overscroll-behavior-inline: contain;
-          scroll-snap-type: x proximity;
-          scroll-padding-inline: var(--spacing-inline-2xs);
+          display: grid;
+          gap: var(--spacing-stack-2xs);
+          padding-block-end: 0;
+          overflow-x: visible;
         }
 
         .group-title {
-          display: none;
-        }
-
-        .item {
-          flex: 0 0 12.5rem;
-          align-content: start;
-          scroll-snap-align: start;
+          display: block;
         }
       }
     `,
@@ -166,11 +167,18 @@ export class AppComboList extends LitElement {
 
   @query('.list') private readonly listElement!: HTMLElement | null;
 
+  /** Tabs for the categories this set has. */
+  private get tabs() {
+    return tabs.filter((tab) => this.combos.some((combo) => combo.category === tab.category));
+  }
+
   override willUpdate(changed: PropertyValues): void {
     // Open the tab that holds the selected combo; switching tabs by hand is kept otherwise.
     if (changed.has('selectedId') || changed.has('combos')) {
       const selected = this.combos.find((combo) => combo.id === this.selectedId);
       if (selected) this.tab = selected.category;
+      else if (!this.tabs.some((tab) => tab.category === this.tab))
+        this.tab = this.tabs[0]?.category ?? 'combo';
     }
   }
 
@@ -207,15 +215,16 @@ export class AppComboList extends LitElement {
     if (!keys.includes(event.key)) return;
 
     event.preventDefault();
-    const index = tabs.findIndex((tab) => tab.category === this.tab);
+    const available = this.tabs;
+    const index = available.findIndex((tab) => tab.category === this.tab);
     const next =
       event.key === 'Home'
         ? 0
         : event.key === 'End'
-          ? tabs.length - 1
-          : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+          ? available.length - 1
+          : (index + (event.key === 'ArrowRight' ? 1 : -1) + available.length) % available.length;
 
-    this.tab = tabs[next]!.category;
+    this.tab = available[next]!.category;
     void this.updateComplete.then(() => {
       this.renderRoot.querySelector<HTMLElement>(`#tab-${this.tab}`)?.focus();
     });
@@ -223,10 +232,12 @@ export class AppComboList extends LitElement {
 
   override render() {
     const visible = this.combos.filter((combo) => combo.category === this.tab);
+    const available = this.tabs;
+    const tabbed = available.length > 1;
 
     return html`
-      <div class="tabs" role="tablist" aria-label="Tipo" @keydown=${this.onTabKeydown}>
-        ${tabs.map(
+      <div class="tabs" role="tablist" aria-label="Tipo" ?hidden=${!tabbed} @keydown=${this.onTabKeydown}>
+        ${available.map(
           (tab) =>
             html`<button
               id="tab-${tab.category}"
@@ -241,7 +252,13 @@ export class AppComboList extends LitElement {
             </button>`,
         )}
       </div>
-      <div id="panel" class="list" role="tabpanel" aria-labelledby="tab-${this.tab}">
+      <div
+        id="panel"
+        class="list"
+        role=${tabbed ? 'tabpanel' : 'group'}
+        aria-labelledby=${tabbed ? `tab-${this.tab}` : nothing}
+        aria-label=${tabbed ? nothing : 'Combos'}
+      >
         ${groupCombos(visible).map(
           ([group, combos]) => html`
             <p class="group-title">${group}</p>

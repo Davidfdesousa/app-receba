@@ -1,17 +1,11 @@
-import type { ComboSet, ComboStep } from '../lib/combo/combo.types.ts';
+import type { ComboSet, ComboStep } from '../../lib/combo/combo.types.ts';
+import { mk1kombo } from './mk1kombo.ts';
 
 /**
  * Ghostface (main) + Scorpion (kameo) — Mortal Kombat 1.
  * Combos from the mk1kombo community database; authors credited per combo.
  * Copy is Brazilian Portuguese; inputs inside brackets use universal notation.
  */
-const mk1kombo = (reference: string, author: string) => ({
-  site: 'mk1kombo',
-  url: `https://mk1kombo.kagewebsite.com/combo/${reference}`,
-  reference: `#${reference}`,
-  author,
-});
-
 const opener: ComboStep = { notation: 'F+2 1', kind: 'normal', label: 'Abertura' };
 const backstagePassEx: ComboStep = {
   notation: 'D B 3+EX',

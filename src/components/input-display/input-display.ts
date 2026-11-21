@@ -5,7 +5,6 @@ import { stepNote } from '../../lib/combo/combo-summary.ts';
 import type { ComboStep } from '../../lib/combo/combo.types.ts';
 import { lastIndexAtOrBefore, type Timeline } from '../../lib/combo/timeline.ts';
 import { baseStyles } from '../../styles/shared.styles.ts';
-import '../icon/icon.ts';
 import '../input-sequence/input-sequence.ts';
 import '../notation-text/notation-text.ts';
 
@@ -13,7 +12,8 @@ export type InputDisplayState = 'ready' | 'count-in' | 'running' | 'ended';
 
 /**
  * The big panel: the step to play now, lit press by press, with its note and what
- * comes next. Shows a play icon before starting, the 3-2-1 count-in and the result.
+ * comes next. Before starting it previews the first step dimmed (no play icon: the
+ * panel is not a button), then shows the 3-2-1 count-in and the result.
  */
 @customElement('app-input-display')
 export class AppInputDisplay extends LitElement {
@@ -28,9 +28,9 @@ export class AppInputDisplay extends LitElement {
         display: grid;
         align-content: start;
         gap: var(--spacing-stack-xs);
-        min-block-size: 13rem;
+        min-block-size: 12rem;
         padding-block: var(--spacing-inset-md) var(--spacing-inset-sm);
-        padding-inline: var(--spacing-inset-lg);
+        padding-inline: var(--spacing-inset-md);
       }
 
       p {
@@ -72,12 +72,6 @@ export class AppInputDisplay extends LitElement {
         -webkit-text-fill-color: transparent;
       }
 
-      .start {
-        --app-icon-size: var(--size-input-lg);
-
-        color: var(--color-content-brand);
-      }
-
       .note {
         min-block-size: 1.5em;
         color: var(--color-content-accent);
@@ -92,10 +86,10 @@ export class AppInputDisplay extends LitElement {
         font-size: var(--typography-body-sm-size);
       }
 
-      @media (max-width: 37.5rem) {
+      @media (min-width: 37.5rem) {
         .display {
-          min-block-size: 12rem;
-          padding-inline: var(--spacing-inset-md);
+          min-block-size: 13rem;
+          padding-inline: var(--spacing-inset-lg);
         }
       }
     `,
@@ -151,13 +145,27 @@ export class AppInputDisplay extends LitElement {
 
   private renderContent() {
     switch (this.state) {
-      case 'ready':
+      case 'ready': {
+        const first = this.steps[0];
         return html`
           <p class="status">Pronto para começar</p>
-          <div class="current"><app-icon class="start" name="play"></app-icon></div>
+          <div class="current">
+            ${
+              first
+                ? html`<app-input-sequence
+                    notation=${first.notation}
+                    size="lg"
+                    .litCount=${0}
+                  ></app-input-sequence>`
+                : nothing
+            }
+          </div>
           <p class="note"></p>
-          <p class="next">${this.renderFirst()}</p>
+          <p class="next">
+            ${first ? html`<app-notation-text size="sm" text="Primeiro passo: ${first.label}"></app-notation-text>` : nothing}
+          </p>
         `;
+      }
       case 'count-in':
         return html`
           <p class="status">Prepare</p>

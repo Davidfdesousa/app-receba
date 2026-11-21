@@ -36,13 +36,13 @@ export class AppComboSteps extends LitElement {
 
       .row {
         display: grid;
-        grid-template-columns: 2.125rem minmax(0, 1fr) auto;
+        grid-template-columns: 1.75rem minmax(0, 1fr);
         gap: var(--spacing-inline-sm);
         align-items: center;
         inline-size: 100%;
         min-block-size: 2.75rem;
         padding-block: var(--spacing-inset-sm);
-        padding-inline: var(--spacing-inset-md);
+        padding-inline: var(--spacing-inset-sm);
         border: 1px solid var(--color-border-default);
         border-radius: var(--radius-control);
         background: var(--color-bg-default);
@@ -94,6 +94,7 @@ export class AppComboSteps extends LitElement {
       }
 
       .kind {
+        grid-column: 2;
         font-family: var(--typography-font-family-ui);
         font-size: var(--typography-label-size);
         font-weight: var(--typography-label-weight);
@@ -122,14 +123,14 @@ export class AppComboSteps extends LitElement {
         color: var(--color-content-step-finisher);
       }
 
-      @media (max-width: 37.5rem) {
+      @media (min-width: 37.5rem) {
         .row {
-          grid-template-columns: 1.75rem minmax(0, 1fr);
-          padding-inline: var(--spacing-inset-sm);
+          grid-template-columns: 2.125rem minmax(0, 1fr) auto;
+          padding-inline: var(--spacing-inset-md);
         }
 
         .kind {
-          grid-column: 2;
+          grid-column: auto;
         }
       }
     `,
