@@ -1,3 +1,9 @@
+## [1.3.1](https://github.com/Davidfdesousa/app-receba/compare/v1.3.0...v1.3.1) (2026-11-21)
+
+### Bug Fixes
+
+* hero slogan reads "Escolha a dupla, aperte play e Receba!!" ([#13](https://github.com/Davidfdesousa/app-receba/issues/13)) ([64f1010](https://github.com/Davidfdesousa/app-receba/commit/64f1010f3763b49a45a95a26c83dcbc8cc4bf7c3))
+
 ## [1.3.0](https://github.com/Davidfdesousa/app-receba/compare/v1.2.0...v1.3.0) (2026-11-21)
 
 ### Features
