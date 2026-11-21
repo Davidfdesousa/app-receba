@@ -18,9 +18,21 @@ export class AppHeader extends LitElement {
     baseStyles,
     css`
       :host {
+        position: relative;
         display: block;
-        border-block-end: 1px solid var(--color-border-brand-subtle);
-        background: var(--color-bg-default);
+        background: var(--color-bg-bar);
+      }
+
+      /* Burning edge under the bar, like the official site. */
+      :host::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        inset-block-end: calc(var(--size-fire-edge) * -1);
+        block-size: var(--size-fire-edge);
+        background: var(--gradient-fire);
+        box-shadow: var(--shadow-fire);
+        pointer-events: none;
       }
 
       .container {
@@ -36,12 +48,22 @@ export class AppHeader extends LitElement {
 
       .brand {
         margin: 0;
-        color: var(--color-content-brand);
         font-family: var(--typography-font-family-display);
         font-size: var(--typography-title-sm-size);
         font-weight: var(--typography-display-weight);
+        line-height: 1;
         letter-spacing: var(--typography-display-letter-spacing);
         text-transform: uppercase;
+        background: var(--gradient-brand-metal);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .brand-accent {
+        color: var(--color-content-brand);
+        -webkit-text-fill-color: var(--color-content-brand);
       }
 
       .actions {
@@ -58,9 +80,13 @@ export class AppHeader extends LitElement {
         font-size: var(--typography-body-sm-size);
       }
 
-      @media (max-width: 40rem) {
+      .user-name {
+        display: none;
+      }
+
+      @media (min-width: 40rem) {
         .user-name {
-          display: none;
+          display: inline;
         }
       }
     `,
@@ -107,10 +133,16 @@ export class AppHeader extends LitElement {
     </app-button>`;
   }
 
+  /** "Receba!!" → "Receba" + red "!!". */
+  private renderBrand() {
+    const match = /^(.*?)(!+)$/.exec(this.brand);
+    return match ? html`${match[1]}<span class="brand-accent">${match[2]}</span>` : this.brand;
+  }
+
   override render() {
     return html`
       <header class="container">
-        <p class="brand">${this.brand}</p>
+        <p class="brand">${this.renderBrand()}</p>
         <div class="actions">
           ${this.user ? this.renderUser(this.user) : this.canSignIn ? this.renderSignIn() : nothing}
           <app-theme-toggle></app-theme-toggle>

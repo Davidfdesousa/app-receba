@@ -70,15 +70,19 @@ export class AppPlaybackControls extends LitElement {
         gap: var(--spacing-stack-sm) var(--spacing-inline-md);
       }
 
-      .transport,
       .toggles {
         display: flex;
         flex-wrap: wrap;
         gap: var(--spacing-inline-xs);
       }
 
+      /* Phone first: play takes the whole row; restart joins the speed row. */
+      .transport {
+        display: contents;
+      }
+
       .play {
-        min-inline-size: 9rem;
+        flex: 1 0 100%;
       }
 
       app-button::part(control) {
@@ -92,7 +96,7 @@ export class AppPlaybackControls extends LitElement {
 
       .field-label {
         color: var(--color-content-muted);
-        font-family: var(--typography-font-family-ui);
+        font-family: var(--typography-font-family-label);
         font-size: var(--typography-caption-size);
         font-weight: var(--typography-label-weight);
         letter-spacing: var(--typography-label-letter-spacing);
@@ -170,9 +174,9 @@ export class AppPlaybackControls extends LitElement {
         border-radius: var(--radius-control);
         background: var(--color-bg-default);
         color: var(--color-content-default);
-        font-family: var(--typography-font-family-ui);
-        font-size: var(--typography-body-md-size);
-        font-weight: var(--typography-label-weight);
+        font-family: var(--typography-font-family-label);
+        font-size: var(--typography-body-sm-size);
+        font-weight: var(--typography-display-weight);
         letter-spacing: var(--typography-label-letter-spacing);
         text-transform: uppercase;
         cursor: pointer;
@@ -194,14 +198,16 @@ export class AppPlaybackControls extends LitElement {
         cursor: pointer;
       }
 
-      /* Phone: play takes the whole row; restart joins the speed row. */
-      @media (max-width: 37.5rem) {
+      @media (min-width: 37.5rem) {
         .transport {
-          display: contents;
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--spacing-inline-xs);
         }
 
         .play {
-          flex: 1 0 100%;
+          flex: 0 1 auto;
+          min-inline-size: 9rem;
         }
       }
     `,

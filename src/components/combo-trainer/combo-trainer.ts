@@ -19,6 +19,15 @@ import '../notation-text/notation-text.ts';
 import '../playback-controls/playback-controls.ts';
 import type { PlaybackStatus } from '../playback-controls/playback-controls.ts';
 
+/** Result line at the end: "384 de dano em 18 golpes", or whatever the source gave. */
+function comboResult(combo: Combo): string {
+  const { damage, hits } = combo;
+  if (damage !== undefined && hits !== undefined) return `${damage} de dano em ${hits} golpes`;
+  if (damage !== undefined) return `${damage} de dano`;
+  if (hits !== undefined) return `${hits} golpes`;
+  return 'Combo completo';
+}
+
 /** Jumping to a step starts slightly before its first input. */
 const stepSeekLeadMs = 250;
 
@@ -49,8 +58,8 @@ export class AppComboTrainer extends LitElement {
 
       .layout {
         display: grid;
-        grid-template-columns: 18.125rem minmax(0, 1fr);
-        gap: var(--spacing-inline-lg);
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--spacing-stack-sm);
         align-items: start;
       }
 
@@ -73,7 +82,7 @@ export class AppComboTrainer extends LitElement {
         justify-content: space-between;
         gap: var(--spacing-stack-sm) var(--spacing-inline-lg);
         padding-block: var(--spacing-inset-md);
-        padding-inline: var(--spacing-inset-lg);
+        padding-inline: var(--spacing-inset-md);
         border-block-end: 1px solid var(--color-border-default);
       }
 
@@ -143,7 +152,7 @@ export class AppComboTrainer extends LitElement {
       .hint {
         margin: 0;
         padding-block: var(--spacing-inset-sm) var(--spacing-inset-md);
-        padding-inline: var(--spacing-inset-lg);
+        padding-inline: var(--spacing-inset-md);
         color: var(--color-content-muted);
         font-size: var(--typography-body-sm-size);
       }
@@ -159,7 +168,7 @@ export class AppComboTrainer extends LitElement {
         display: flex;
         align-items: center;
         min-block-size: 2.75rem;
-        font-family: var(--typography-font-family-ui);
+        font-family: var(--typography-font-family-label);
         font-weight: var(--typography-label-weight);
         letter-spacing: var(--typography-label-letter-spacing);
         text-transform: uppercase;
@@ -190,17 +199,17 @@ export class AppComboTrainer extends LitElement {
         padding-block-end: var(--spacing-inset-md);
       }
 
-      @media (max-width: 53.75rem) {
-        .layout {
-          grid-template-columns: minmax(0, 1fr);
-          gap: var(--spacing-stack-sm);
+      @media (min-width: 37.5rem) {
+        .stage-head,
+        .hint {
+          padding-inline: var(--spacing-inset-lg);
         }
       }
 
-      @media (max-width: 37.5rem) {
-        .stage-head,
-        .hint {
-          padding-inline: var(--spacing-inset-md);
+      @media (min-width: 53.75rem) {
+        .layout {
+          grid-template-columns: 18.125rem minmax(0, 1fr);
+          gap: var(--spacing-inline-lg);
         }
       }
     `,
@@ -320,8 +329,8 @@ export class AppComboTrainer extends LitElement {
     const lead: Stat[] =
       combo.category === 'combo'
         ? [
-            [combo.damage ?? 0, 'de dano'],
-            [combo.hits ?? 0, 'golpes'],
+            ...(combo.damage === undefined ? [] : [[combo.damage, 'de dano'] satisfies Stat]),
+            ...(combo.hits === undefined ? [] : [[combo.hits, 'golpes'] satisfies Stat]),
           ]
         : [[combo.steps.length, 'passos']];
     const stats: Stat[] = [
@@ -343,10 +352,7 @@ export class AppComboTrainer extends LitElement {
 
   private renderStage(combo: Combo, timeline: Timeline) {
     const { playback } = this;
-    const summary =
-      combo.category === 'combo'
-        ? `${combo.damage ?? 0} de dano em ${combo.hits ?? 0} golpes`
-        : 'Peça completa';
+    const summary = combo.category === 'combo' ? comboResult(combo) : 'Peça completa';
     const displayState: InputDisplayState = playback.phase;
 
     return html`<section class="stage" aria-labelledby="combo-title">

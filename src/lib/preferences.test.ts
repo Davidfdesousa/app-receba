@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import {
   defaultTrainerPreferences,
+  duoStorageKey,
+  readDuoPreference,
   readTrainerPreferences,
+  storeDuoPreference,
   storeTrainerPreferences,
   trainerStorageKey,
   type TrainerPreferences,
@@ -65,5 +68,23 @@ describe('trainer preferences', () => {
     expect(() => {
       storeTrainerPreferences(defaultTrainerPreferences, blocked);
     }).not.toThrow();
+  });
+});
+
+describe('duo preference', () => {
+  it('is empty until a duo is picked, then reads back', () => {
+    expect(readDuoPreference()).toBeNull();
+
+    storeDuoPreference({ fighterId: 'scorpion', kameoId: 'sareena' });
+
+    expect(readDuoPreference()).toEqual({ fighterId: 'scorpion', kameoId: 'sareena' });
+  });
+
+  it('keeps only valid string fields and survives corrupt data', () => {
+    localStorage.setItem(duoStorageKey, JSON.stringify({ fighterId: 'scorpion', kameoId: 7 }));
+    expect(readDuoPreference()).toEqual({ fighterId: 'scorpion' });
+
+    localStorage.setItem(duoStorageKey, '{not json');
+    expect(readDuoPreference()).toBeNull();
   });
 });

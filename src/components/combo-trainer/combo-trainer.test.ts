@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { ghostfaceScorpion } from '../../data/ghostface-scorpion.ts';
+import { ghostfaceScorpion } from '../../data/combo-sets/ghostface-scorpion.ts';
 import { readTrainerPreferences, storeTrainerPreferences, trainerStorageKey } from '../../lib/preferences.ts';
 import type { AppComboTrainer } from './combo-trainer.ts';
 import './combo-trainer.ts';

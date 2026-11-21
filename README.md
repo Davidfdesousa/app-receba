@@ -1,22 +1,42 @@
-# Receba
+# Receba!!
 
-Treino de combos de Mortal Kombat 1 com a sequência de botões no tempo certo.
+**Escolha a dupla. Aperte play. Receba!!**
+
+Chega de caçar combo em fórum e pausar vídeo para decorar. O Receba!! indica o Kameo que a comunidade mais usa com o seu lutador e mostra cada botão no tempo certo, até o combo sair na mão. Mortal Kombat 1, controle de PS5.
+
+## Duplas recomendadas
+
+Escolha o lutador e o app já seleciona o **Kameo ideal**, com mais duas alternativas e o motivo de cada uma. Começa pelos 12 lutadores mais jogados no online (Ghostface, Johnny Cage, Kitana, Liu Kang, Mileena, Noob Saibot, Omni-Man, Raiden, Scorpion, Smoke, Sub-Zero e T-1000).
+
+As indicações cruzam:
+
+- os combos que a comunidade publica por dupla no [mk1kombo](https://mk1kombo.kagewebsite.com/) (e as listas "Best Kameos" do site);
+- guias e vídeos de combos no YouTube;
+- o uso de lutadores e Kameos no online, que a comunidade do GameFAQs compila a cada temporada (a Sareena lidera todas);
+- os personagens usados no Evo 2025.
+
+Duplas ainda sem combos conferidos aparecem como "em breve", com atalho para outro Kameo indicado e para os combos da comunidade.
+
+Onde mexer:
+
+- **Lutadores, Kameos e indicações:** `src/data/roster.ts`. Para incluir um lutador, adicione um perfil com as indicações em ordem (a primeira é o Kameo ideal).
+- **Combos de uma dupla:** crie `src/data/combo-sets/<lutador>-<kameo>.ts` e registre em `src/data/combo-sets/index.ts`. Cada dupla vira um arquivo separado no build, carregado só quando é escolhida. Os testes conferem notação, créditos e ids.
 
 ## Treino de combos
 
-Ghostface com Kameo Scorpion, no controle de PS5. Escolha um combo e toque em **Tocar**: a tela mostra cada botão no momento de apertar.
+Escolha um combo e toque em **Tocar**: a tela mostra cada botão no momento de apertar.
 
 - **Trilha estilo jogo de ritmo:** as notas andam até a linha "agora" e cruzam no tempo de cada input.
 - **Passo atual em destaque**, com a nota do passo e o próximo, e a lista numerada (clique num passo para pular para ele).
 - **Contagem 3, 2, 1**, velocidade 0,5x / 0,75x / 1x, repetição, **cliques dos botões** e **metrônomo** (90 / 120 / 150 BPM, a contagem cai nos tempos e o primeiro input no tempo forte).
-- Espaço toca e pausa. Velocidade, sons, metrônomo e o último combo ficam salvos no navegador.
-- Combos da comunidade [mk1kombo](https://mk1kombo.kagewebsite.com/combos-ghostface/all/), com o autor indicado em cada um.
+- Espaço toca e pausa. A dupla, a velocidade, os sons, o metrônomo e o último combo ficam salvos no navegador.
+- Combos da comunidade [mk1kombo](https://mk1kombo.kagewebsite.com/), com o autor indicado em cada um.
 
 O ritmo é aproximado (o tempo exato depende do hitstun): comece em 0,5x e ajuste no Modo Treino. A especificação completa está em [`docs/combo-trainer/SPEC.md`](docs/combo-trainer/SPEC.md).
 
 Onde mexer:
 
-- **Combos:** `src/data/ghostface-scorpion.ts`, em notação universal (`1 2 3 4`, `F B U D UF`, `K EX TH`, `+` junta botões, `,` é pausa). Textos aceitam notação entre colchetes: `Pulo e [2 2] no ar`.
+- **Notação:** combos em notação universal (`1 2 3 4`, `F B U D UF`, `K EX TH`, `+` junta botões, `,` é pausa). Textos aceitam notação entre colchetes: `Pulo e [2 2] no ar`.
 - **Como cada botão aparece:** `src/lib/combo/controller-layout.ts` (`ps5Layout`) é a única fonte de verdade. Nenhum componente digita símbolos de botão.
 - **Ritmo:** `timing` em `src/lib/combo/timeline.ts`. **Relógio e áudio:** `src/controllers/playback.controller.ts` e `src/lib/audio/`.
 
@@ -25,7 +45,7 @@ Onde mexer:
 - **Build:** Vite 8
 - **Linguagem:** TypeScript 6 em modo strict
 - **UI:** Web Components com Lit 3 (Shadow DOM)
-- **Estilo:** CSS puro com tokens em duas camadas (foundation → semantic) e tema claro/escuro via `light-dark()`
+- **Estilo:** CSS puro, mobile first, com tokens em duas camadas (foundation → semantic) e tema claro/escuro via `light-dark()`
 - **Autenticação:** Firebase Authentication com provedor Google
 - **Testes:** Vitest + happy-dom
 - **Qualidade:** ESLint (typescript-eslint, lit, wc) + Prettier
@@ -80,7 +100,7 @@ Como funciona por dentro:
 ```text
 src/
 ├─ app/
-│  └─ app-root.ts            # shell: dono do estado de auth, escolhe a página
+│  └─ app-root.ts            # shell: dono do estado de auth e da dupla escolhida
 ├─ components/               # componentes reutilizáveis (um por pasta)
 │  ├─ avatar/
 │  ├─ button/                # button.ts · button.styles.ts · button.test.ts
@@ -92,8 +112,15 @@ src/
 │  ├─ app.config.ts          # nome e título do app
 │  └─ firebase.config.ts     # lê e valida as variáveis VITE_FIREBASE_*
 ├─ controllers/
-│  └─ auth.controller.ts     # ReactiveController que conecta um elemento ao AuthService
+│  ├─ auth.controller.ts     # ReactiveController que conecta um elemento ao AuthService
+│  ├─ duo.controller.ts      # dupla escolhida: restaura, salva e carrega os combos sob demanda
+│  └─ playback.controller.ts # relógio da reprodução e agendamento de áudio
+├─ data/
+│  ├─ roster.ts              # lutadores, Kameos e indicações da comunidade
+│  └─ combo-sets/            # um arquivo por dupla + index.ts com o registro
 ├─ lib/
+│  ├─ combo/                 # notação, layout do controle, timeline
+│  ├─ roster/                # tipos e regras das duplas (Kameo ideal, opções)
 │  ├─ store.ts               # store observável mínima
 │  └─ theme.ts               # tema claro/escuro + persistência
 ├─ pages/                    # páginas sem estado próprio (props descem, eventos sobem)
@@ -112,7 +139,7 @@ src/
 
 Os tokens vivem em CSS custom properties e atravessam o Shadow DOM naturalmente.
 
-- **Foundation** (`foundation.css`): paleta em OKLCH (`--palette-neutral-*`, `--palette-brand-*`…), escala de tamanho (`--size-*`), fontes, raios e motion. Componentes **não** usam esta camada.
+- **Foundation** (`foundation.css`): paleta em OKLCH (`--palette-obsidian-*`, `--palette-silver-*`, `--palette-blood-*`…), escala de tamanho (`--size-*`), fontes, raios e motion. Componentes **não** usam esta camada.
 - **Semantic** (`semantic.css`): o que os componentes consomem, no formato `--{categoria}-{papel}-{variante}`:
   - Cor: `--color-bg-*`, `--color-content-*`, `--color-border-*`
   - Variantes: `default`, `subtle`, `muted`, `strong`, `intense`, `hover`, `pressed`
@@ -121,7 +148,8 @@ Os tokens vivem em CSS custom properties e atravessam o Shadow DOM naturalmente.
 
 Tema:
 
-- Por padrão o app é escuro (visual do Mortal Kombat 1); o tema claro é o "pergaminho".
+- Por padrão o app é escuro, inspirado no site oficial do Mortal Kombat 1: barras pretas, páginas grafite (#1e1e1e), letras prateadas, o vermelho do dragão (#b10000) nas ações e uma borda de fogo dividindo as seções. O tema claro é "fumaça" (branco e prata, com o mesmo vermelho).
+- Títulos e etiquetas usam a serifa gravada (Cinzel); números e leituras curtas, a condensada (Saira Condensed).
 - `data-theme="light" | "dark"` no `<html>` força um tema; também funciona em qualquer elemento para tematizar só aquele trecho.
 - O `app-theme-toggle` salva a escolha em `localStorage` (`app:theme`) e um script inline no `index.html` restaura antes do primeiro paint, sem flash.
 - Cada token de cor declara os dois valores uma única vez com `light-dark()`; o build gera fallback para navegadores antigos.
@@ -146,7 +174,9 @@ static override styles = css`
 - `app-icon` — ícones SVG inline; decorativo por padrão, `label` torna significativo
 - `app-card` — superfície com padding `md`, `lg` ou `xl`
 - `app-avatar` — foto do usuário com fallback para iniciais
-- `app-header` — marca, usuário logado, sair e toggle de tema
+- `app-header` — barra preta com borda de fogo, marca, usuário logado, sair e toggle de tema
+- `app-duo-picker` — escolhe lutador e Kameo, com o Kameo ideal e as alternativas indicadas
+- `app-combo-trainer` — lista de combos, trilha, controles e passos de uma dupla
 - `app-theme-toggle` — alterna claro/escuro
 
 Convenções:

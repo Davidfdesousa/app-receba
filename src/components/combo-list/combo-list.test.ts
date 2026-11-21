@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 
-import { ghostfaceScorpion } from '../../data/ghostface-scorpion.ts';
+import { ghostfaceScorpion } from '../../data/combo-sets/ghostface-scorpion.ts';
 import type { AppComboList, ComboSelectDetail } from './combo-list.ts';
 import './combo-list.ts';
 
@@ -34,6 +34,17 @@ describe('app-combo-list', () => {
     expect(tab?.textContent.trim()).toBe('Peças');
     expect(items(list)).toHaveLength(9);
     expect(items(list)[0]?.querySelector('.summary')?.textContent).toBe('Abre quase todos os combos');
+  });
+
+  it('drops the tabs when the set only has full combos', async () => {
+    const element = document.createElement('app-combo-list');
+    element.combos = ghostfaceScorpion.combos.filter((combo) => combo.category === 'combo');
+    document.body.append(element);
+    await element.updateComplete;
+
+    expect(element.shadowRoot?.querySelector('[role="tablist"]')?.hasAttribute('hidden')).toBe(true);
+    expect(element.shadowRoot?.querySelector('.list')?.getAttribute('role')).toBe('group');
+    expect(items(element)).toHaveLength(6);
   });
 
   it('fires combo-select with the combo id', async () => {

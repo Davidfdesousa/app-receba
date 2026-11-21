@@ -1,6 +1,6 @@
 export const appConfig = {
   name: 'app-receba',
-  title: 'Receba',
+  title: 'Receba!!',
 } as const;
 
 export type AppConfig = typeof appConfig;
