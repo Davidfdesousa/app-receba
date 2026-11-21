@@ -29,22 +29,11 @@ export class AppTrainerPage extends LitElement {
       }
 
       .hero {
-        position: relative;
         display: grid;
         gap: var(--spacing-stack-xs);
         margin-block-end: var(--spacing-stack-md);
         padding-block-end: var(--spacing-stack-md);
-      }
-
-      /* The burning edge under the pitch, as on the official site's sections. */
-      .hero::after {
-        content: '';
-        position: absolute;
-        inset-inline: 0;
-        inset-block-end: 0;
-        block-size: var(--size-fire-edge);
-        background: var(--gradient-fire);
-        box-shadow: var(--shadow-fire);
+        border-block-end: 1px solid var(--color-border-default);
       }
 
       p {
@@ -69,16 +58,11 @@ export class AppTrainerPage extends LitElement {
         letter-spacing: var(--typography-display-letter-spacing);
         text-transform: uppercase;
         text-wrap: balance;
-        background: var(--gradient-brand-metal);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        -webkit-text-fill-color: transparent;
+        color: var(--color-content-strong);
       }
 
       h1 .brand {
         color: var(--color-content-brand);
-        -webkit-text-fill-color: var(--color-content-brand);
       }
 
       .lede {
@@ -95,11 +79,17 @@ export class AppTrainerPage extends LitElement {
         gap: var(--spacing-stack-md);
       }
 
+      .duo {
+        display: grid;
+        gap: var(--spacing-stack-xs);
+        scroll-margin-block-start: var(--spacing-stack-xs);
+      }
+
       .duo-title {
         margin: 0;
         color: var(--color-content-strong);
         font-family: var(--typography-font-family-display);
-        font-size: var(--typography-title-md-size);
+        font-size: var(--typography-title-sm-size);
         font-weight: var(--typography-display-weight);
         line-height: var(--typography-title-line-height);
         letter-spacing: var(--typography-display-letter-spacing);
@@ -178,6 +168,14 @@ export class AppTrainerPage extends LitElement {
           gap: var(--spacing-stack-lg);
         }
 
+        .duo {
+          gap: var(--spacing-stack-sm);
+        }
+
+        .duo-title {
+          font-size: var(--typography-title-md-size);
+        }
+
         .notice {
           padding-inline: var(--spacing-inset-lg);
         }
@@ -197,7 +195,7 @@ export class AppTrainerPage extends LitElement {
 
   private renderHero() {
     return html`<header class="hero">
-      <p class="eyebrow">Mortal Kombat 1 · controle de PS5</p>
+      <p class="eyebrow">Mortal Kombat 1 · PlayStation e Xbox</p>
       <h1>Escolha a dupla. Aperte play. <span class="brand">Receba!!</span></h1>
       <p class="lede">
         Chega de caçar combo em fórum e pausar vídeo para decorar. O <strong>Receba!!</strong> indica o Kameo
@@ -246,7 +244,7 @@ export class AppTrainerPage extends LitElement {
     const loadingOther = status === 'loading' && comboSet !== null;
     const showsSet = comboSet !== null && (status === 'ready' || loadingOther);
 
-    return html`<section class="content" aria-labelledby="duo-title">
+    return html`<section class="duo" aria-labelledby="duo-title">
       <h2 id="duo-title" class="duo-title">${fighter.name} <span class="plus">+</span> ${kameo.name}</h2>
       ${
         showsSet

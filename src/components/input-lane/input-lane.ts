@@ -38,20 +38,20 @@ export class AppInputLane extends LitElement {
         --_hit-x: max(3.5rem, 18%);
 
         position: relative;
-        block-size: 6.75rem;
+        /* Shorter on short screens, so the stage and the controls fit together. */
+        block-size: clamp(4.5rem, 11vh, 6.75rem);
         overflow: hidden;
         border-block-start: 1px solid var(--color-border-default);
+        /* Flat beat bands (hard stops, no fade). */
         background: repeating-linear-gradient(
           90deg,
           var(--color-bg-track) 0 2.5rem,
-          color-mix(in oklab, var(--color-bg-track), var(--color-bg-default) 40%) 2.5rem 5rem
+          var(--color-bg-track-beat) 2.5rem 5rem
         );
-        -webkit-mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
-        mask-image: linear-gradient(90deg, transparent, black 6%, black 94%, transparent);
       }
 
       .lane.compact {
-        block-size: 6rem;
+        block-size: clamp(4.25rem, 10vh, 6rem);
       }
 
       .hit {
@@ -61,7 +61,6 @@ export class AppInputLane extends LitElement {
         inline-size: 3px;
         margin-inline-start: -1px;
         background: var(--color-border-brand);
-        box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-border-brand) 18%, transparent);
       }
 
       .hit-label {

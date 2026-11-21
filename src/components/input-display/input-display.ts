@@ -24,12 +24,12 @@ export class AppInputDisplay extends LitElement {
         display: block;
       }
 
+      /* Every row keeps a fixed minimum height, so nothing jumps while the combo plays. */
       .display {
         display: grid;
         align-content: start;
-        gap: var(--spacing-stack-xs);
-        min-block-size: 12rem;
-        padding-block: var(--spacing-inset-md) var(--spacing-inset-sm);
+        gap: var(--spacing-stack-2xs);
+        padding-block: var(--spacing-inset-sm) var(--spacing-inset-xs);
         padding-inline: var(--spacing-inset-md);
       }
 
@@ -56,25 +56,23 @@ export class AppInputDisplay extends LitElement {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        min-block-size: calc(var(--size-input-lg) + var(--spacing-stack-xs));
+        min-block-size: calc(var(--size-input-lg) + var(--spacing-stack-2xs));
       }
 
+      /* As tall as the large glyphs, so the count-in does not resize the panel. */
       .figure {
+        color: var(--color-content-strong);
         font-family: var(--typography-font-family-display);
-        font-size: var(--typography-display-xl-size);
+        font-size: var(--size-input-lg);
         font-weight: var(--typography-display-weight);
         line-height: 1;
         letter-spacing: var(--typography-display-letter-spacing);
-        background: var(--gradient-brand-metal);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        -webkit-text-fill-color: transparent;
       }
 
       .note {
-        min-block-size: 1.5em;
+        min-block-size: 1.4em;
         color: var(--color-content-accent);
+        font-size: var(--typography-body-sm-size);
         font-weight: var(--typography-label-weight);
       }
 
@@ -86,10 +84,16 @@ export class AppInputDisplay extends LitElement {
         font-size: var(--typography-body-sm-size);
       }
 
-      @media (min-width: 37.5rem) {
+      @media (min-width: 40rem) {
         .display {
-          min-block-size: 13rem;
           padding-inline: var(--spacing-inset-lg);
+        }
+      }
+
+      /* More air only when the screen is tall enough to spare it. */
+      @media (min-width: 40rem) and (min-height: 37.5rem) {
+        .display {
+          gap: var(--spacing-stack-xs);
         }
       }
     `,

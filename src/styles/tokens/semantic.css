@@ -2,15 +2,16 @@
  * Semantic tokens — the only tokens components should consume.
  *
  * Naming: --{category}-{role}-{variant}
- *   category · color | gradient | spacing | typography | radius | shadow
+ *   category · color | spacing | typography | radius | shadow
  *   role     · bg | content | border (color) · stack | inline | inset (spacing)
  *   variant  · default | subtle | muted | strong | intense | hover | pressed
  *
  * Theming uses CSS light-dark(): each color token declares its light and dark
  * value once, and the active `color-scheme` picks one. The app is dark by default,
- * after the official Mortal Kombat 1 look: black bars, charcoal pages, silver
- * lettering and the dragon red for actions. [data-theme='light'] switches to the
- * "smoke" theme (white and silver surfaces, the same red).
+ * after the official Mortal Kombat 1 look: flat near-black surfaces, white and silver
+ * text, and the dragon red as the one accent for actions, selection and dividers. No
+ * gradients: every surface and line is a solid color. [data-theme='light'] switches
+ * to the "smoke" theme (white and silver surfaces, the same red).
  * The scheme can be forced on <html> or on any element to theme just that subtree.
  * Because color-scheme inherits, this also works inside Shadow DOM.
  *
@@ -33,14 +34,14 @@
 :root,
 [data-theme] {
   /* Color · background */
-  --color-bg-default: light-dark(var(--palette-silver-0), var(--palette-obsidian-800));
-  --color-bg-subtle: light-dark(var(--palette-silver-100), var(--palette-obsidian-900));
-  --color-bg-muted: light-dark(var(--palette-silver-200), var(--palette-obsidian-700));
-  --color-bg-strong: light-dark(var(--palette-silver-300), var(--palette-obsidian-600));
+  --color-bg-default: light-dark(var(--palette-silver-0), var(--palette-obsidian-900));
+  --color-bg-subtle: light-dark(var(--palette-silver-100), var(--palette-obsidian-950));
+  --color-bg-muted: light-dark(var(--palette-silver-200), var(--palette-obsidian-800));
+  --color-bg-strong: light-dark(var(--palette-silver-300), var(--palette-obsidian-700));
   --color-bg-intense: light-dark(var(--palette-obsidian-900), var(--palette-silver-100));
   --color-bg-bar: light-dark(var(--palette-silver-0), var(--palette-obsidian-1000));
-  --color-bg-neutral-hover: light-dark(var(--palette-silver-100), var(--palette-obsidian-700));
-  --color-bg-neutral-pressed: light-dark(var(--palette-silver-200), var(--palette-obsidian-600));
+  --color-bg-neutral-hover: light-dark(var(--palette-silver-100), var(--palette-obsidian-800));
+  --color-bg-neutral-pressed: light-dark(var(--palette-silver-200), var(--palette-obsidian-700));
   --color-bg-brand: light-dark(var(--palette-blood-600), var(--palette-blood-600));
   --color-bg-brand-hover: light-dark(var(--palette-blood-700), var(--palette-blood-500));
   --color-bg-brand-pressed: light-dark(var(--palette-blood-800), var(--palette-blood-700));
@@ -48,7 +49,8 @@
   --color-bg-accent-subtle: light-dark(var(--palette-gold-100), var(--palette-ember-900));
   --color-bg-danger-subtle: light-dark(var(--palette-blood-100), var(--palette-blood-900));
   --color-bg-success-subtle: light-dark(var(--palette-silver-50), var(--palette-jade-900));
-  --color-bg-track: light-dark(var(--palette-silver-200), var(--palette-obsidian-950));
+  --color-bg-track: light-dark(var(--palette-silver-200), var(--palette-obsidian-1000));
+  --color-bg-track-beat: light-dark(var(--palette-silver-100), var(--palette-obsidian-950));
 
   /* Color · content (text and icons) */
   --color-content-default: light-dark(var(--palette-obsidian-900), var(--palette-silver-100));
@@ -58,7 +60,6 @@
   --color-content-on-intense: light-dark(var(--palette-silver-0), var(--palette-obsidian-1000));
   --color-content-on-brand: light-dark(var(--palette-silver-0), var(--palette-silver-0));
   --color-content-brand: light-dark(var(--palette-blood-600), var(--palette-blood-350));
-  --color-content-highlight: light-dark(var(--palette-gold-700), var(--palette-gold-300));
   --color-content-accent: light-dark(var(--palette-ember-700), var(--palette-ember-400));
   --color-content-danger: light-dark(var(--palette-blood-600), var(--palette-blood-400));
   --color-content-success: light-dark(var(--palette-jade-700), var(--palette-jade-400));
@@ -68,12 +69,28 @@
   --color-border-strong: light-dark(var(--palette-silver-300), var(--palette-obsidian-600));
   --color-border-brand: light-dark(var(--palette-blood-600), var(--palette-blood-500));
   --color-border-brand-subtle: light-dark(var(--palette-blood-200), var(--palette-blood-800));
-  --color-border-focus: light-dark(var(--palette-gold-700), var(--palette-gold-300));
+  --color-border-focus: light-dark(var(--palette-obsidian-1000), var(--palette-silver-0));
   --color-border-danger: light-dark(var(--palette-blood-500), var(--palette-blood-400));
 
   /* Color · controller inputs (caps stay dark in both themes, like the pad) */
   --color-bg-input-cap: light-dark(var(--palette-obsidian-800), var(--palette-obsidian-700));
   --color-bg-input-cap-direction: light-dark(var(--palette-obsidian-700), var(--palette-obsidian-600));
+  --color-content-input-xbox-a: light-dark(
+    var(--palette-controller-xbox-a),
+    var(--palette-controller-xbox-a)
+  );
+  --color-content-input-xbox-b: light-dark(
+    var(--palette-controller-xbox-b),
+    var(--palette-controller-xbox-b)
+  );
+  --color-content-input-xbox-x: light-dark(
+    var(--palette-controller-xbox-x),
+    var(--palette-controller-xbox-x)
+  );
+  --color-content-input-xbox-y: light-dark(
+    var(--palette-controller-xbox-y),
+    var(--palette-controller-xbox-y)
+  );
   --color-border-input-cap: light-dark(var(--palette-obsidian-1000), var(--palette-obsidian-1000));
   --color-content-input-direction: light-dark(var(--palette-silver-50), var(--palette-silver-100));
   --color-content-input-triangle: light-dark(
@@ -108,35 +125,9 @@
   --color-shadow-subtle: light-dark(oklch(0% 0 0 / 0.08), oklch(0% 0 0 / 0.4));
   --color-shadow-strong: light-dark(oklch(0% 0 0 / 0.14), oklch(0% 0 0 / 0.6));
 
-  /* Gradient · chrome lettering for titles (silver on dark, dark steel on light) */
-  --gradient-brand-metal: linear-gradient(
-    180deg,
-    light-dark(var(--palette-obsidian-600), var(--palette-silver-0)) 0%,
-    light-dark(var(--palette-obsidian-900), var(--palette-silver-200)) 50%,
-    light-dark(var(--palette-obsidian-1000), var(--palette-silver-500)) 100%
-  );
-  --gradient-surface-glow: radial-gradient(
-    120% 90% at 50% 0%,
-    light-dark(var(--palette-silver-0), var(--palette-obsidian-800)) 0%,
-    light-dark(var(--palette-silver-100), var(--palette-obsidian-900)) 70%
-  );
-
-  /* Gradient · the burning edge that divides bars and sections */
-  --gradient-fire: linear-gradient(
-    90deg,
-    transparent 0%,
-    var(--palette-blood-500) 8%,
-    var(--palette-ember-400) 30%,
-    var(--palette-gold-300) 50%,
-    var(--palette-ember-400) 70%,
-    var(--palette-blood-500) 92%,
-    transparent 100%
-  );
-
   /* Elevation */
   --shadow-sm: 0 1px 2px var(--color-shadow-subtle);
   --shadow-md: 0 4px 12px var(--color-shadow-strong), 0 1px 3px var(--color-shadow-subtle);
-  --shadow-fire: 0 0 10px oklch(72% 0.18 50 / 0.55), 0 0 2px oklch(83% 0.14 85 / 0.8);
   --shadow-input-cap:
     inset 0 -3px 0 oklch(0% 0 0 / 0.45), inset 0 1px 0 oklch(100% 0 0 / 0.1), 0 1px 2px oklch(0% 0 0 / 0.3);
 }
@@ -181,8 +172,6 @@
 
   --typography-display-lg-size: clamp(var(--font-size-600), 6.5vw, var(--font-size-1000));
   --typography-display-md-size: clamp(var(--font-size-500), 3.4vw, var(--font-size-700));
-  /* Count-in and result figures, as tall as the large input glyphs */
-  --typography-display-xl-size: clamp(var(--font-size-1000), 9vw, var(--font-size-1400));
   --typography-display-weight: var(--font-weight-bold);
   --typography-display-line-height: var(--line-height-tight);
   --typography-display-letter-spacing: var(--letter-spacing-wide);
@@ -212,10 +201,11 @@
   --size-input-inline: 1.375em;
   --size-input-sm: var(--size-700);
   --size-input-md: var(--size-800);
-  --size-input-lg: clamp(var(--size-1200), 7vw, var(--size-1800));
+  /* Follows the screen height too, so the stage fits short and landscape screens. */
+  --size-input-lg: clamp(2.25rem, min(10vw, 8vh), var(--size-1800));
 
-  /* Fire edge thickness */
-  --size-fire-edge: 2px;
+  /* Red rule under the top bar and between major sections */
+  --size-accent-rule: 2px;
 
   /* Focus */
   --focus-ring-width: 2px;

@@ -47,6 +47,19 @@ describe('app-combo-list', () => {
     expect(items(element)).toHaveLength(6);
   });
 
+  it('explains what the open tab holds', async () => {
+    const list = await mountList('combo-469');
+    const hint = () => list.shadowRoot?.querySelector('#list-hint')?.textContent ?? '';
+
+    expect(hint()).toContain('sequência inteira');
+    expect(list.shadowRoot?.querySelector('.list')?.getAttribute('aria-describedby')).toBe('list-hint');
+
+    list.shadowRoot?.querySelector<HTMLButtonElement>('#tab-piece')?.click();
+    await list.updateComplete;
+
+    expect(hint()).toContain('trecho curto');
+  });
+
   it('fires combo-select with the combo id', async () => {
     const list = await mountList('combo-469');
     const listener = vi.fn<(detail: ComboSelectDetail) => void>();

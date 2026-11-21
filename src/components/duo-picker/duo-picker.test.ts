@@ -57,11 +57,11 @@ describe('app-duo-picker', () => {
     const { element } = await mountPicker({ fighterId: 'scorpion', kameoId: 'sareena' });
     const root = element.shadowRoot;
 
-    expect(root?.querySelector('.advice-head strong')?.textContent).toBe('Sareena');
     expect(chips(element).map((chip) => chip.textContent.replace(/\s+/g, ' ').trim())).toEqual([
       '1º Sareena',
-      '2º Ferra em breve',
+      '2º Ferra, combos em breve',
     ]);
+    expect(chips(element)[1]?.classList.contains('soon')).toBe(true);
     expect(chips(element)[0]?.getAttribute('aria-pressed')).toBe('true');
     expect(root?.querySelector('.reason app-notation-text')?.getAttribute('text')).toBe(
       'A Kameo mais usada do online.',

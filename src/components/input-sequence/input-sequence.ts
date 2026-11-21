@@ -1,15 +1,16 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
-import { describeNotation } from '../../lib/combo/controller-layout.ts';
+import { ControllerLayoutController } from '../../controllers/controller-layout.controller.ts';
+import { describeNotation, type ControllerLayout } from '../../lib/combo/controller-layout.ts';
 import { parseNotation, type NotationPart } from '../../lib/combo/notation.ts';
 import { baseStyles } from '../../styles/shared.styles.ts';
 import '../input-glyph/input-glyph.ts';
 import type { InputGlyphSize } from '../input-glyph/input-glyph.ts';
 
-function readNotation(notation: string): { parts: NotationPart[]; label: string } {
+function readNotation(notation: string, layout: ControllerLayout): { parts: NotationPart[]; label: string } {
   try {
-    return { parts: parseNotation(notation), label: describeNotation(notation) };
+    return { parts: parseNotation(notation), label: describeNotation(notation, layout) };
   } catch {
     // Data is validated in tests; a bad string should not take the page down.
     return { parts: [], label: '' };
@@ -111,8 +112,10 @@ export class AppInputSequence extends LitElement {
   /** Presses lit from the start; leave unset to show every press normally. */
   @property({ type: Number, attribute: 'lit-count' }) litCount: number | undefined;
 
+  private readonly controller = new ControllerLayoutController(this);
+
   override render() {
-    const { parts, label } = readNotation(this.notation);
+    const { parts, label } = readNotation(this.notation, this.controller.layout);
     if (parts.length === 0) return nothing;
 
     const tracksProgress = typeof this.litCount === 'number';

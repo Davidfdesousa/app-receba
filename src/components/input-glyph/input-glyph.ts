@@ -2,14 +2,15 @@ import { LitElement, css, html, nothing, svg, type SVGTemplateResult } from 'lit
 import { customElement, property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
-import { ps5Layout, type GlyphShape } from '../../lib/combo/controller-layout.ts';
+import { ControllerLayoutController } from '../../controllers/controller-layout.controller.ts';
+import type { GlyphShape } from '../../lib/combo/controller-layout.ts';
 import { isInputToken } from '../../lib/combo/notation.ts';
 import { baseStyles } from '../../styles/shared.styles.ts';
 
 export type InputGlyphSize = 'inline' | 'sm' | 'md' | 'lg';
 
 /** Stroke symbols drawn inside the caps (24×24). */
-const symbols: Record<Exclude<GlyphShape, 'trigger'>, SVGTemplateResult> = {
+const symbols: Record<Exclude<GlyphShape, 'trigger' | 'letter'>, SVGTemplateResult> = {
   square: svg`<rect x="7" y="7" width="10" height="10" rx="1" />`,
   triangle: svg`<path d="M12 5.8 18.6 17.2H5.4Z" />`,
   cross: svg`<path d="M7 7 17 17M17 7 7 17" />`,
@@ -18,8 +19,9 @@ const symbols: Record<Exclude<GlyphShape, 'trigger'>, SVGTemplateResult> = {
 };
 
 /**
- * One controller input, drawn from the controller layout — the only place the UI
- * shows a button. Takes a universal notation token (`1`, `F`, `K`…).
+ * One controller input, drawn from the controller the player picked (PlayStation by
+ * default, or Xbox) — the only place the UI shows a button. Takes a universal notation
+ * token (`1`, `F`, `K`…).
  *
  * @example <app-input-glyph token="2" size="sm"></app-input-glyph>
  */
@@ -93,6 +95,27 @@ export class AppInputGlyph extends LitElement {
         color: var(--color-content-input-square);
       }
 
+      [data-tone='xbox-a'] {
+        color: var(--color-content-input-xbox-a);
+      }
+
+      [data-tone='xbox-b'] {
+        color: var(--color-content-input-xbox-b);
+      }
+
+      [data-tone='xbox-x'] {
+        color: var(--color-content-input-xbox-x);
+      }
+
+      [data-tone='xbox-y'] {
+        color: var(--color-content-input-xbox-y);
+      }
+
+      .letter .caption {
+        font-size: calc(var(--_size) * 0.56);
+        letter-spacing: 0;
+      }
+
       .trigger {
         inline-size: auto;
         min-inline-size: calc(var(--_size) * 1.2);
@@ -129,13 +152,20 @@ export class AppInputGlyph extends LitElement {
   @property({ reflect: true }) token = '';
   @property({ reflect: true }) size: InputGlyphSize = 'md';
 
+  private readonly controller = new ControllerLayoutController(this);
+
   override render() {
     if (!isInputToken(this.token)) return nothing;
 
-    const glyph = ps5Layout[this.token];
+    const glyph = this.controller.layout[this.token];
 
-    if (glyph.shape === 'trigger') {
-      return html`<span class="cap trigger" data-tone=${glyph.tone} role="img" aria-label=${glyph.name}>
+    if (glyph.shape === 'trigger' || glyph.shape === 'letter') {
+      return html`<span
+        class="cap ${glyph.shape}"
+        data-tone=${glyph.tone}
+        role="img"
+        aria-label=${glyph.name}
+      >
         <span class="caption" aria-hidden="true">${glyph.caption}</span>
       </span>`;
     }

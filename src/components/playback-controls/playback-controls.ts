@@ -63,51 +63,77 @@ export class AppPlaybackControls extends LitElement {
         display: block;
       }
 
+      /* Phone first: play, restart and speed share one row, right under the stage. */
       .controls {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-end;
-        gap: var(--spacing-stack-sm) var(--spacing-inline-md);
+        display: grid;
+        gap: var(--spacing-stack-sm);
       }
 
-      .toggles {
+      .main-row {
         display: flex;
-        flex-wrap: wrap;
+        align-items: center;
         gap: var(--spacing-inline-xs);
       }
 
-      /* Phone first: play takes the whole row; restart joins the speed row. */
-      .transport {
-        display: contents;
-      }
-
       .play {
-        flex: 1 0 100%;
+        flex: 1 1 auto;
+        min-inline-size: 0;
       }
 
       app-button::part(control) {
         min-block-size: 2.75rem;
       }
 
+      .restart::part(control) {
+        min-inline-size: 2.75rem;
+        padding-inline: 0;
+      }
+
+      .restart-text {
+        position: absolute;
+        inline-size: 1px;
+        block-size: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
       .field {
-        display: grid;
-        gap: var(--spacing-stack-2xs);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: var(--spacing-inline-xs);
+      }
+
+      .speed .field-label {
+        position: absolute;
+        inline-size: 1px;
+        block-size: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
       }
 
       .field-label {
         color: var(--color-content-muted);
         font-family: var(--typography-font-family-label);
         font-size: var(--typography-caption-size);
-        font-weight: var(--typography-label-weight);
+        font-weight: var(--typography-display-weight);
         letter-spacing: var(--typography-label-letter-spacing);
         text-transform: uppercase;
       }
 
-      .field-row {
+      .extras {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: var(--spacing-inline-sm);
+        gap: var(--spacing-stack-xs) var(--spacing-inline-sm);
+      }
+
+      .toggles {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-inline-xs);
       }
 
       .segmented {
@@ -119,15 +145,15 @@ export class AppPlaybackControls extends LitElement {
 
       .segmented button {
         min-block-size: 2.75rem;
-        min-inline-size: 3.25rem;
-        padding-inline: var(--spacing-inset-sm);
+        min-inline-size: 2.75rem;
+        padding-inline: var(--spacing-inset-xs);
         border: 0;
         border-radius: 0;
         background: transparent;
         color: var(--color-content-default);
         font-family: var(--typography-font-family-ui);
-        font-size: var(--typography-body-md-size);
-        font-weight: var(--typography-label-weight);
+        font-size: var(--typography-body-sm-size);
+        font-weight: var(--typography-figure-weight);
         letter-spacing: var(--typography-label-letter-spacing);
         text-transform: uppercase;
         cursor: pointer;
@@ -143,8 +169,13 @@ export class AppPlaybackControls extends LitElement {
 
       .segmented button[aria-pressed='true'] {
         background: var(--color-bg-brand-subtle);
-        color: var(--color-content-brand);
+        color: var(--color-content-strong);
         box-shadow: inset 0 0 0 1px var(--color-border-brand);
+      }
+
+      .segmented button:focus-visible {
+        outline: var(--focus-ring-width) solid var(--color-border-focus);
+        outline-offset: calc(var(--focus-ring-offset) * -1);
       }
 
       .segmented button:first-child {
@@ -160,7 +191,7 @@ export class AppPlaybackControls extends LitElement {
       .heard {
         color: var(--color-content-subtle);
         font-family: var(--typography-font-family-ui);
-        font-size: var(--typography-body-md-size);
+        font-size: var(--typography-body-sm-size);
         white-space: nowrap;
       }
 
@@ -169,13 +200,13 @@ export class AppPlaybackControls extends LitElement {
         align-items: center;
         gap: var(--spacing-inline-xs);
         min-block-size: 2.75rem;
-        padding-inline: var(--spacing-inset-md);
+        padding-inline: var(--spacing-inset-sm);
         border: 1px solid var(--color-border-default);
         border-radius: var(--radius-control);
         background: var(--color-bg-default);
         color: var(--color-content-default);
         font-family: var(--typography-font-family-label);
-        font-size: var(--typography-body-sm-size);
+        font-size: var(--typography-caption-size);
         font-weight: var(--typography-display-weight);
         letter-spacing: var(--typography-label-letter-spacing);
         text-transform: uppercase;
@@ -187,7 +218,7 @@ export class AppPlaybackControls extends LitElement {
       }
 
       .toggle:has(input:checked) {
-        border-color: var(--color-border-brand-subtle);
+        border-color: var(--color-border-brand);
       }
 
       .toggle input {
@@ -198,16 +229,35 @@ export class AppPlaybackControls extends LitElement {
         cursor: pointer;
       }
 
-      @media (min-width: 37.5rem) {
-        .transport {
-          display: flex;
-          flex-wrap: wrap;
-          gap: var(--spacing-inline-xs);
-        }
-
+      @media (min-width: 40rem) {
         .play {
           flex: 0 1 auto;
           min-inline-size: 9rem;
+        }
+
+        .segmented button {
+          min-inline-size: 3.25rem;
+          padding-inline: var(--spacing-inset-sm);
+        }
+      }
+
+      /* Room for the written labels only on wide screens: the row must stay one line. */
+      @media (min-width: 64rem) {
+        .restart::part(control) {
+          padding-inline: var(--spacing-inset-md);
+        }
+
+        .restart-text,
+        .speed .field-label {
+          position: static;
+          inline-size: auto;
+          block-size: auto;
+          overflow: visible;
+          clip: auto;
+        }
+
+        .speed {
+          margin-inline-start: var(--spacing-inline-sm);
         }
       }
     `,
@@ -228,7 +278,7 @@ export class AppPlaybackControls extends LitElement {
 
     return html`
       <div class="controls">
-        <div class="transport">
+        <div class="main-row">
           <app-button
             class="play"
             @click=${() => {
@@ -239,93 +289,97 @@ export class AppPlaybackControls extends LitElement {
             ${playLabels[this.status]}
           </app-button>
           <app-button
+            class="restart"
             variant="secondary"
+            title="Reiniciar"
             @click=${() => {
               this.emit('playback-restart', undefined);
             }}
           >
             <app-icon slot="icon-start" name="restart"></app-icon>
-            Reiniciar
+            <span class="restart-text">Reiniciar</span>
           </app-button>
-        </div>
 
-        <div class="field">
-          <span class="field-label" id="speed-label">Velocidade</span>
-          <div class="segmented" role="group" aria-labelledby="speed-label">
-            ${playbackSpeeds.map(
-              (speed) =>
-                html`<button
-                  type="button"
-                  aria-pressed=${speed === this.speed ? 'true' : 'false'}
-                  @click=${() => {
-                    this.emit('speed-change', { speed });
-                  }}
-                >
-                  ${formatSpeed(speed)}
-                </button>`,
-            )}
-          </div>
-        </div>
-
-        <div class="toggles">
-          <label class="toggle">
-            <input
-              type="checkbox"
-              .checked=${this.loop}
-              @change=${(event: Event) => {
-                this.emit('loop-change', { loop: (event.target as HTMLInputElement).checked });
-              }}
-            />
-            Repetir
-          </label>
-          <label class="toggle">
-            <input
-              type="checkbox"
-              .checked=${this.inputClicks}
-              @change=${(event: Event) => {
-                this.emit('input-clicks-change', {
-                  enabled: (event.target as HTMLInputElement).checked,
-                });
-              }}
-            />
-            Cliques dos botões
-          </label>
-        </div>
-
-        <div class="field">
-          <span class="field-label" id="metronome-label">Metrônomo (BPM)</span>
-          <div class="field-row">
-            <div class="segmented" role="group" aria-labelledby="metronome-label">
-              <button
-                type="button"
-                aria-pressed=${this.metronomeTempo === null ? 'true' : 'false'}
-                @click=${() => {
-                  this.emit('metronome-change', { tempo: null });
-                }}
-              >
-                Desligado
-              </button>
-              ${metronomeTempos.map(
-                (tempo) =>
+          <div class="field speed">
+            <span class="field-label" id="speed-label">Velocidade</span>
+            <div class="segmented" role="group" aria-labelledby="speed-label">
+              ${playbackSpeeds.map(
+                (speed) =>
                   html`<button
                     type="button"
-                    aria-pressed=${tempo === this.metronomeTempo ? 'true' : 'false'}
+                    aria-pressed=${speed === this.speed ? 'true' : 'false'}
                     @click=${() => {
-                      this.emit('metronome-change', { tempo });
+                      this.emit('speed-change', { speed });
                     }}
                   >
-                    ${tempo}
+                    ${formatSpeed(speed)}
                   </button>`,
               )}
             </div>
-            ${
-              this.metronomeTempo === null
-                ? nothing
-                : html`<span class="heard"
-                    >${effectiveTempo(this.metronomeTempo, this.speed)} bpm em
-                    ${formatSpeed(this.speed)}</span
-                  >`
-            }
+          </div>
+        </div>
+
+        <div class="extras">
+          <div class="toggles">
+            <label class="toggle">
+              <input
+                type="checkbox"
+                .checked=${this.loop}
+                @change=${(event: Event) => {
+                  this.emit('loop-change', { loop: (event.target as HTMLInputElement).checked });
+                }}
+              />
+              Repetir
+            </label>
+            <label class="toggle">
+              <input
+                type="checkbox"
+                .checked=${this.inputClicks}
+                @change=${(event: Event) => {
+                  this.emit('input-clicks-change', {
+                    enabled: (event.target as HTMLInputElement).checked,
+                  });
+                }}
+              />
+              Cliques dos botões
+            </label>
+          </div>
+
+          <div class="field">
+            <span class="field-label" id="metronome-label">Metrônomo (BPM)</span>
+            <div class="field-row">
+              <div class="segmented" role="group" aria-labelledby="metronome-label">
+                <button
+                  type="button"
+                  aria-pressed=${this.metronomeTempo === null ? 'true' : 'false'}
+                  @click=${() => {
+                    this.emit('metronome-change', { tempo: null });
+                  }}
+                >
+                  Desligado
+                </button>
+                ${metronomeTempos.map(
+                  (tempo) =>
+                    html`<button
+                      type="button"
+                      aria-pressed=${tempo === this.metronomeTempo ? 'true' : 'false'}
+                      @click=${() => {
+                        this.emit('metronome-change', { tempo });
+                      }}
+                    >
+                      ${tempo}
+                    </button>`,
+                )}
+              </div>
+              ${
+                this.metronomeTempo === null
+                  ? nothing
+                  : html`<span class="heard"
+                      >${effectiveTempo(this.metronomeTempo, this.speed)} bpm em
+                      ${formatSpeed(this.speed)}</span
+                    >`
+              }
+            </div>
           </div>
         </div>
       </div>
