@@ -2,7 +2,7 @@
 
 **Escolha a dupla. Aperte play. Receba!!**
 
-Chega de caçar combo em fórum e pausar vídeo para decorar. O Receba!! indica o Kameo que a comunidade mais usa com o seu lutador e mostra cada botão no tempo certo, até o combo sair na mão. Mortal Kombat 1, controle de PS5.
+Chega de caçar combo em fórum e pausar vídeo para decorar. O Receba!! indica o Kameo que a comunidade mais usa com o seu lutador e mostra cada botão no tempo certo, até o combo sair na mão. Mortal Kombat 1, com os botões do controle de PlayStation (padrão) ou de Xbox.
 
 ## Duplas recomendadas
 
@@ -29,6 +29,7 @@ Escolha um combo e toque em **Tocar**: a tela mostra cada botão no momento de a
 - **Trilha estilo jogo de ritmo:** as notas andam até a linha "agora" e cruzam no tempo de cada input.
 - **Passo atual em destaque**, com a nota do passo e o próximo, e a lista numerada (clique num passo para pular para ele).
 - **Contagem 3, 2, 1**, velocidade 0,5x / 0,75x / 1x, repetição, **cliques dos botões** e **metrônomo** (90 / 120 / 150 BPM, a contagem cai nos tempos e o primeiro input no tempo forte).
+- No celular, do título da dupla até os botões de velocidade cabe numa tela só (inclusive com o celular deitado, a partir de ~380px de altura).
 - Espaço toca e pausa. A dupla, a velocidade, os sons, o metrônomo e o último combo ficam salvos no navegador.
 - Combos da comunidade [mk1kombo](https://mk1kombo.kagewebsite.com/), com o autor indicado em cada um.
 
@@ -37,7 +38,7 @@ O ritmo é aproximado (o tempo exato depende do hitstun): comece em 0,5x e ajust
 Onde mexer:
 
 - **Notação:** combos em notação universal (`1 2 3 4`, `F B U D UF`, `K EX TH`, `+` junta botões, `,` é pausa). Textos aceitam notação entre colchetes: `Pulo e [2 2] no ar`.
-- **Como cada botão aparece:** `src/lib/combo/controller-layout.ts` (`ps5Layout`) é a única fonte de verdade. Nenhum componente digita símbolos de botão.
+- **Como cada botão aparece:** `src/lib/combo/controller-layout.ts` (`ps5Layout` e `xboxLayout`) é a única fonte de verdade. Nenhum componente digita símbolos de botão. O controle escolhido no topo (PS ou Xbox) fica em `controllerStore` (`src/lib/controller-preference.ts`), salvo em `localStorage` (`app:controller`), e todos os glifos trocam juntos.
 - **Ritmo:** `timing` em `src/lib/combo/timeline.ts`. **Relógio e áudio:** `src/controllers/playback.controller.ts` e `src/lib/audio/`.
 
 ## Stack
@@ -148,7 +149,7 @@ Os tokens vivem em CSS custom properties e atravessam o Shadow DOM naturalmente.
 
 Tema:
 
-- Por padrão o app é escuro, inspirado no site oficial do Mortal Kombat 1: barras pretas, páginas grafite (#1e1e1e), letras prateadas, o vermelho do dragão (#b10000) nas ações e uma borda de fogo dividindo as seções. O tema claro é "fumaça" (branco e prata, com o mesmo vermelho).
+- Por padrão o app é escuro, inspirado no site oficial do Mortal Kombat 1: superfícies quase pretas (#000 na barra, #0a0a0a na página, #141414 nos painéis), texto branco e prata e o vermelho do dragão (#b10000) como único destaque, nas ações, na seleção e na linha sob a barra. Sem degradês: toda cor é chapada. O tema claro é "fumaça" (branco e prata, com o mesmo vermelho).
 - Títulos e etiquetas usam a serifa gravada (Cinzel); números e leituras curtas, a condensada (Saira Condensed).
 - `data-theme="light" | "dark"` no `<html>` força um tema; também funciona em qualquer elemento para tematizar só aquele trecho.
 - O `app-theme-toggle` salva a escolha em `localStorage` (`app:theme`) e um script inline no `index.html` restaura antes do primeiro paint, sem flash.
@@ -174,8 +175,9 @@ static override styles = css`
 - `app-icon` — ícones SVG inline; decorativo por padrão, `label` torna significativo
 - `app-card` — superfície com padding `md`, `lg` ou `xl`
 - `app-avatar` — foto do usuário com fallback para iniciais
-- `app-header` — barra preta com borda de fogo, marca, usuário logado, sair e toggle de tema
-- `app-duo-picker` — escolhe lutador e Kameo, com o Kameo ideal e as alternativas indicadas
+- `app-header` — barra preta com linha vermelha, marca, escolha de controle, usuário logado, sair e toggle de tema
+- `app-controller-picker` — alterna os botões entre PlayStation e Xbox
+- `app-duo-picker` — escolhe lutador e Kameo, com o Kameo ideal e as alternativas em etiquetas compactas
 - `app-combo-trainer` — lista de combos, trilha, controles e passos de uma dupla
 - `app-theme-toggle` — alterna claro/escuro
 

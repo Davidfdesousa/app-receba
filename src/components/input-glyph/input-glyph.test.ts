@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import { inputTokens } from '../../lib/combo/notation.ts';
-import { ps5Layout } from '../../lib/combo/controller-layout.ts';
+import { ps5Layout, xboxLayout } from '../../lib/combo/controller-layout.ts';
+import { selectController } from '../../lib/controller-preference.ts';
 import { mount } from '../../test/render.ts';
 import type { AppInputGlyph } from './input-glyph.ts';
 import './input-glyph.ts';
@@ -45,6 +46,21 @@ describe('app-input-glyph', () => {
     expect(cap(element).dataset.tone).toBe('kameo');
     expect(cap(element).textContent.trim()).toBe('R1');
     expect(element.getAttribute('size')).toBe('sm');
+  });
+
+  it('switches to Xbox letters and bumpers when the player picks Xbox', async () => {
+    const face = await mount<AppInputGlyph>('<app-input-glyph token="3"></app-input-glyph>');
+    const kameo = await mount<AppInputGlyph>('<app-input-glyph token="K"></app-input-glyph>');
+
+    selectController('xbox');
+    await face.updateComplete;
+    await kameo.updateComplete;
+
+    expect(cap(face).classList.contains('letter')).toBe(true);
+    expect(cap(face).dataset.tone).toBe('xbox-a');
+    expect(cap(face).textContent.trim()).toBe('A');
+    expect(cap(face).getAttribute('aria-label')).toBe(xboxLayout['3'].name);
+    expect(cap(kameo).textContent.trim()).toBe('RB');
   });
 
   it('renders nothing for an unknown token', async () => {

@@ -5,6 +5,7 @@ import type { AuthUser } from '../../services/auth/index.ts';
 import { baseStyles } from '../../styles/shared.styles.ts';
 import '../avatar/avatar.ts';
 import '../button/button.ts';
+import '../controller-picker/controller-picker.ts';
 import '../icon/icon.ts';
 import '../theme-toggle/theme-toggle.ts';
 
@@ -18,21 +19,9 @@ export class AppHeader extends LitElement {
     baseStyles,
     css`
       :host {
-        position: relative;
         display: block;
+        border-block-end: var(--size-accent-rule) solid var(--color-border-brand);
         background: var(--color-bg-bar);
-      }
-
-      /* Burning edge under the bar, like the official site. */
-      :host::after {
-        content: '';
-        position: absolute;
-        inset-inline: 0;
-        inset-block-end: calc(var(--size-fire-edge) * -1);
-        block-size: var(--size-fire-edge);
-        background: var(--gradient-fire);
-        box-shadow: var(--shadow-fire);
-        pointer-events: none;
       }
 
       .container {
@@ -54,16 +43,11 @@ export class AppHeader extends LitElement {
         line-height: 1;
         letter-spacing: var(--typography-display-letter-spacing);
         text-transform: uppercase;
-        background: var(--gradient-brand-metal);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        -webkit-text-fill-color: transparent;
+        color: var(--color-content-strong);
       }
 
       .brand-accent {
         color: var(--color-content-brand);
-        -webkit-text-fill-color: var(--color-content-brand);
       }
 
       .actions {
@@ -145,6 +129,7 @@ export class AppHeader extends LitElement {
         <p class="brand">${this.renderBrand()}</p>
         <div class="actions">
           ${this.user ? this.renderUser(this.user) : this.canSignIn ? this.renderSignIn() : nothing}
+          <app-controller-picker></app-controller-picker>
           <app-theme-toggle></app-theme-toggle>
         </div>
       </header>

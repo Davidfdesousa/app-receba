@@ -3,19 +3,19 @@
  * Components must NOT use these directly: consume semantic tokens instead
  * (see semantic.css). Foundation exists so themes have a single palette to map from.
  *
- * The palette follows the Mortal Kombat 1 look: neutral blacks and charcoal (#000,
- * #1e1e1e), silver lettering, the dragon red (#b10000), fire orange and gold sparks.
- * Controller hues mirror the PlayStation face buttons so every input reads the same
- * everywhere in the app.
+ * The palette follows the Mortal Kombat 1 look: near-black surfaces, silver lettering
+ * and the dragon red (#b10000) as the single accent, plus fire orange and gold for the
+ * combo step kinds. Controller hues mirror the PlayStation and Xbox face buttons so
+ * every input reads the same everywhere in the app.
  */
 :root {
-  /* Palette · obsidian (neutral blacks, dark surfaces) */
-  --palette-obsidian-500: oklch(52% 0 0);
-  --palette-obsidian-600: oklch(42% 0 0);
-  --palette-obsidian-700: oklch(33.5% 0 0);
-  --palette-obsidian-800: oklch(27.5% 0 0);
-  --palette-obsidian-900: oklch(23.5% 0 0);
-  --palette-obsidian-950: oklch(17.5% 0 0);
+  /* Palette · obsidian (neutral blacks, dark surfaces; 950 is #0a0a0a, 900 is #141414) */
+  --palette-obsidian-500: oklch(47% 0 0);
+  --palette-obsidian-600: oklch(37% 0 0);
+  --palette-obsidian-700: oklch(29% 0 0);
+  --palette-obsidian-800: oklch(23% 0 0);
+  --palette-obsidian-900: oklch(19% 0 0);
+  --palette-obsidian-950: oklch(14.5% 0 0);
   --palette-obsidian-1000: oklch(0% 0 0);
 
   /* Palette · silver (chrome lettering, smoke, light surfaces) */
@@ -67,6 +67,10 @@
   --palette-controller-circle-ink: oklch(50% 0.17 20);
   --palette-controller-cross-ink: oklch(48% 0.14 262);
   --palette-controller-square-ink: oklch(52% 0.15 345);
+  --palette-controller-xbox-a: oklch(74% 0.17 145);
+  --palette-controller-xbox-b: oklch(65% 0.2 27);
+  --palette-controller-xbox-x: oklch(68% 0.15 250);
+  --palette-controller-xbox-y: oklch(86% 0.16 92);
 
   /* Size scale (base 4px) */
   --size-0: 0;
@@ -103,7 +107,6 @@
   --font-size-700: 2rem;
   --font-size-900: 2.75rem;
   --font-size-1000: 3.25rem;
-  --font-size-1400: 4.5rem;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;

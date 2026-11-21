@@ -5,7 +5,8 @@ import { styleMap } from 'lit/directives/style-map.js';
 import { PlaybackController } from '../../controllers/playback.controller.ts';
 import { comboMeterBars, formatSeconds } from '../../lib/combo/combo-summary.ts';
 import type { Combo, ComboSet } from '../../lib/combo/combo.types.ts';
-import { legendTokens, ps5Layout } from '../../lib/combo/controller-layout.ts';
+import { ControllerLayoutController } from '../../controllers/controller-layout.controller.ts';
+import { legendTokens } from '../../lib/combo/controller-layout.ts';
 import { buildTimeline, lastIndexAtOrBefore, type Timeline } from '../../lib/combo/timeline.ts';
 import { readTrainerPreferences, storeTrainerPreferences } from '../../lib/preferences.ts';
 import { baseStyles } from '../../styles/shared.styles.ts';
@@ -65,7 +66,7 @@ export class AppComboTrainer extends LitElement {
 
       .main {
         display: grid;
-        gap: var(--spacing-stack-md);
+        gap: var(--spacing-stack-sm);
         min-inline-size: 0;
       }
 
@@ -76,12 +77,15 @@ export class AppComboTrainer extends LitElement {
         background: var(--color-bg-default);
       }
 
+      /* Compact on phones so the whole stage, from the duo title to the speed buttons,
+         fits one screen; the sizes grow with the viewport. */
       .stage-head {
         display: flex;
         flex-wrap: wrap;
+        align-items: end;
         justify-content: space-between;
-        gap: var(--spacing-stack-sm) var(--spacing-inline-lg);
-        padding-block: var(--spacing-inset-md);
+        gap: var(--spacing-stack-xs) var(--spacing-inline-lg);
+        padding-block: var(--spacing-inset-sm);
         padding-inline: var(--spacing-inset-md);
         border-block-end: 1px solid var(--color-border-default);
       }
@@ -90,7 +94,7 @@ export class AppComboTrainer extends LitElement {
         margin: 0;
         color: var(--color-content-strong);
         font-family: var(--typography-font-family-display);
-        font-size: var(--typography-display-md-size);
+        font-size: var(--typography-title-sm-size);
         font-weight: var(--typography-display-weight);
         line-height: var(--typography-display-line-height);
         letter-spacing: var(--typography-display-letter-spacing);
@@ -99,7 +103,7 @@ export class AppComboTrainer extends LitElement {
       .meta {
         margin-block: var(--spacing-stack-2xs) 0;
         color: var(--color-content-muted);
-        font-size: var(--typography-body-sm-size);
+        font-size: var(--typography-caption-size);
       }
 
       .meta a {
@@ -110,7 +114,7 @@ export class AppComboTrainer extends LitElement {
       .stats {
         display: flex;
         flex-wrap: wrap;
-        gap: var(--spacing-stack-xs) var(--spacing-inline-lg);
+        gap: var(--spacing-stack-2xs) var(--spacing-inline-md);
         margin: 0;
       }
 
@@ -123,7 +127,7 @@ export class AppComboTrainer extends LitElement {
         margin: 0;
         color: var(--color-content-strong);
         font-family: var(--typography-font-family-ui);
-        font-size: var(--typography-figure-size);
+        font-size: var(--typography-title-sm-size);
         font-weight: var(--typography-figure-weight);
         line-height: 1;
         white-space: nowrap;
@@ -151,10 +155,8 @@ export class AppComboTrainer extends LitElement {
 
       .hint {
         margin: 0;
-        padding-block: var(--spacing-inset-sm) var(--spacing-inset-md);
-        padding-inline: var(--spacing-inset-md);
         color: var(--color-content-muted);
-        font-size: var(--typography-body-sm-size);
+        font-size: var(--typography-caption-size);
       }
 
       details {
@@ -199,17 +201,31 @@ export class AppComboTrainer extends LitElement {
         padding-block-end: var(--spacing-inset-md);
       }
 
-      @media (min-width: 37.5rem) {
-        .stage-head,
-        .hint {
+      /* Two columns from 640px: also lets a phone in landscape (~380px tall) show the
+         stage and the controls together. */
+      @media (min-width: 40rem) {
+        .layout {
+          grid-template-columns: 13.5rem minmax(0, 1fr);
+          gap: var(--spacing-inline-md);
+        }
+
+        .stage-head {
           padding-inline: var(--spacing-inset-lg);
         }
       }
 
-      @media (min-width: 53.75rem) {
+      @media (min-width: 64rem) {
         .layout {
           grid-template-columns: 18.125rem minmax(0, 1fr);
           gap: var(--spacing-inline-lg);
+        }
+
+        .combo-title {
+          font-size: var(--typography-display-md-size);
+        }
+
+        .stat dd {
+          font-size: var(--typography-figure-size);
         }
       }
     `,
@@ -226,6 +242,8 @@ export class AppComboTrainer extends LitElement {
     inputClicks: this.savedPreferences.inputClicks,
     metronomeTempo: this.savedPreferences.metronomeTempo,
   });
+
+  private readonly controller = new ControllerLayoutController(this);
 
   private loadedCombo: Combo | undefined;
   private timeline: Timeline | null = null;
@@ -377,9 +395,6 @@ export class AppComboTrainer extends LitElement {
       <div class="progress" aria-hidden="true">
         <div class="progress-fill" style=${styleMap({ transform: `scaleX(${playback.progress})` })}></div>
       </div>
-      <p class="hint">
-        Ritmo aproximado: o tempo exato depende do hitstun. Comece em 0,5x e ajuste no Modo Treino.
-      </p>
     </section>`;
   }
 
@@ -391,7 +406,7 @@ export class AppComboTrainer extends LitElement {
           (token) =>
             html`<div class="legend-item">
               <span aria-hidden="true"><app-input-glyph token=${token} size="sm"></app-input-glyph></span>
-              <span>${ps5Layout[token].name}</span>
+              <span>${this.controller.layout[token].name}</span>
             </div>`,
         )}
       </div>
@@ -451,6 +466,9 @@ export class AppComboTrainer extends LitElement {
             this.savePreferences();
           }}
         ></app-playback-controls>
+        <p class="hint">
+          Ritmo aproximado: o tempo exato depende do hitstun. Comece em 0,5x e ajuste no Modo Treino.
+        </p>
         <app-combo-steps
           .steps=${combo.steps}
           active-index=${this.activeStepIndex}
