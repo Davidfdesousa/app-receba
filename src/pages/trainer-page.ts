@@ -196,7 +196,7 @@ export class AppTrainerPage extends LitElement {
   private renderHero() {
     return html`<header class="hero">
       <p class="eyebrow">Mortal Kombat 1 · PlayStation e Xbox</p>
-      <h1>Escolha a dupla. Aperte play. <span class="brand">Receba!!</span></h1>
+      <h1>Escolha a dupla, aperte play e <span class="brand">Receba!!</span></h1>
       <p class="lede">
         Chega de caçar combo em fórum e pausar vídeo para decorar. O <strong>Receba!!</strong> indica o Kameo
         que a comunidade mais usa com o seu lutador e mostra cada botão no tempo certo, até o combo sair na

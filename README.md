@@ -1,6 +1,6 @@
 # Receba!!
 
-**Escolha a dupla. Aperte play. Receba!!** · [receba.dev](https://receba.dev)
+**Escolha a dupla, aperte play e Receba!!** · [receba.dev](https://receba.dev)
 
 Chega de caçar combo em fórum e pausar vídeo para decorar. O Receba!! indica o Kameo que a comunidade mais usa com o seu lutador e mostra cada botão no tempo certo, até o combo sair na mão. Mortal Kombat 1, com os botões do controle de PlayStation (padrão) ou de Xbox.
 
