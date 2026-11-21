@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/Davidfdesousa/app-receba/compare/v1.3.2...v1.4.0) (2026-11-21)
+
+### Features
+
+* add Sektor with Mavado as the ideal Kameo ([#15](https://github.com/Davidfdesousa/app-receba/issues/15)) ([61bf10f](https://github.com/Davidfdesousa/app-receba/commit/61bf10f6808e523bd80cd70341c9bb7376d4c738))
+
 ## [1.3.2](https://github.com/Davidfdesousa/app-receba/compare/v1.3.1...v1.3.2) (2026-11-21)
 
 ### Bug Fixes
