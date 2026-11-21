@@ -189,6 +189,8 @@
   --typography-label-weight: var(--font-weight-semibold);
   --typography-label-letter-spacing: var(--letter-spacing-wide);
   --typography-caption-size: var(--font-size-100);
+  /* Tracking for picker values (fighter and Kameo names), so they never read cramped. */
+  --typography-select-letter-spacing: 0.03em;
   /* Accessibility floor: no text in the app is smaller than 14px, glyph captions included. */
   --typography-min-size: var(--font-size-100);
 

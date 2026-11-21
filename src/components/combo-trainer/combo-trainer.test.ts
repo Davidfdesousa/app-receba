@@ -5,9 +5,10 @@ import { readTrainerPreferences, storeTrainerPreferences, trainerStorageKey } fr
 import type { AppComboTrainer } from './combo-trainer.ts';
 import './combo-trainer.ts';
 
-async function mountTrainer(): Promise<AppComboTrainer> {
+async function mountTrainer({ metronome = false } = {}): Promise<AppComboTrainer> {
   const element = document.createElement('app-combo-trainer');
   element.comboSet = ghostfaceScorpion;
+  element.metronome = metronome;
   document.body.append(element);
   await element.updateComplete;
   return element;
@@ -56,7 +57,7 @@ describe('app-combo-trainer', () => {
   });
 
   it('saves practice options and restores them on the next visit', async () => {
-    const trainer = await mountTrainer();
+    const trainer = await mountTrainer({ metronome: true });
     const controls = part(trainer, 'app-playback-controls');
     const emit = (type: string, detail: unknown) => {
       controls.dispatchEvent(new CustomEvent(type, { detail, bubbles: true, composed: true }));
@@ -76,13 +77,23 @@ describe('app-combo-trainer', () => {
     });
 
     trainer.remove();
-    const again = await mountTrainer();
+    const again = await mountTrainer({ metronome: true });
     const restored = part(again, 'app-playback-controls');
 
     expect(restored.speed).toBe(0.75);
     expect(restored.loop).toBe(true);
     expect(restored.inputClicks).toBe(false);
     expect(restored.metronomeTempo).toBe(150);
+  });
+
+  it('hides the metronome for now, and a saved tempo never plays', async () => {
+    storeTrainerPreferences({ ...readTrainerPreferences(), metronomeTempo: 150 });
+    const trainer = await mountTrainer();
+    const controls = part(trainer, 'app-playback-controls');
+
+    expect(controls.metronome).toBe(false);
+    expect(controls.metronomeTempo).toBeNull();
+    expect(controls.shadowRoot?.querySelector('#metronome-label')).toBeNull();
   });
 
   it('reopens the last combo and ignores one that no longer exists', async () => {

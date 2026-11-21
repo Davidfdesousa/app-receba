@@ -55,6 +55,8 @@ export class AppDuoPicker extends LitElement {
 
       .field {
         display: grid;
+        /* Lets long option names shrink (ellipsis) instead of widening the card. */
+        grid-template-columns: minmax(0, 1fr);
         gap: var(--spacing-stack-2xs);
         min-inline-size: 0;
       }
@@ -72,10 +74,12 @@ export class AppDuoPicker extends LitElement {
       .select {
         position: relative;
         display: flex;
+        min-inline-size: 0;
       }
 
       select {
         flex: 1;
+        inline-size: 100%;
         min-inline-size: 0;
         min-block-size: 2.75rem;
         padding-block: var(--spacing-inset-xs);
@@ -84,13 +88,22 @@ export class AppDuoPicker extends LitElement {
         border-radius: var(--radius-control);
         background: var(--color-bg-subtle);
         color: var(--color-content-strong);
-        font-family: var(--typography-font-family-ui);
+        /* The wider body face with a little tracking: the condensed HUD face read too tight. */
+        font-family: var(--typography-font-family-base);
         /* 16px keeps iOS from zooming in on focus. */
         font-size: var(--typography-body-md-size);
-        font-weight: var(--typography-figure-weight);
+        font-weight: var(--typography-label-weight);
+        letter-spacing: var(--typography-select-letter-spacing);
         text-overflow: ellipsis;
         appearance: none;
         cursor: pointer;
+      }
+
+      option,
+      optgroup {
+        font-family: var(--typography-font-family-base);
+        font-weight: var(--typography-label-weight);
+        letter-spacing: var(--typography-select-letter-spacing);
       }
 
       select:hover {

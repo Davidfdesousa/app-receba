@@ -69,14 +69,16 @@ export class AppPlaybackControls extends LitElement {
         gap: var(--spacing-stack-sm);
       }
 
+      /* One row from ~360px; on tinier screens speed wraps below instead of overflowing. */
       .main-row {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         gap: var(--spacing-inline-xs);
       }
 
       .play {
-        flex: 1 1 auto;
+        flex: 1 1 7rem;
         min-inline-size: 0;
       }
 
@@ -268,6 +270,8 @@ export class AppPlaybackControls extends LitElement {
   @property({ type: Boolean }) loop = false;
   @property({ type: Boolean, attribute: 'input-clicks' }) inputClicks = true;
   @property({ attribute: false }) metronomeTempo: MetronomeTempo | null = null;
+  /** Shows the metronome option. Bind as a property (`.metronome`): it defaults to true. */
+  @property({ type: Boolean }) metronome = true;
 
   private emit<K extends keyof PlaybackControlsEvents>(type: K, detail: PlaybackControlsEvents[K]): void {
     this.dispatchEvent(new CustomEvent(type, { detail, bubbles: true, composed: true }));
@@ -345,42 +349,47 @@ export class AppPlaybackControls extends LitElement {
             </label>
           </div>
 
-          <div class="field">
-            <span class="field-label" id="metronome-label">Metrônomo (BPM)</span>
-            <div class="field-row">
-              <div class="segmented" role="group" aria-labelledby="metronome-label">
-                <button
+          ${this.metronome ? this.renderMetronome() : nothing}
+        </div>
+      </div>
+    `;
+  }
+
+  private renderMetronome() {
+    return html`
+      <div class="field">
+        <span class="field-label" id="metronome-label">Metrônomo (BPM)</span>
+        <div class="field-row">
+          <div class="segmented" role="group" aria-labelledby="metronome-label">
+            <button
+              type="button"
+              aria-pressed=${this.metronomeTempo === null ? 'true' : 'false'}
+              @click=${() => {
+                this.emit('metronome-change', { tempo: null });
+              }}
+            >
+              Desligado
+            </button>
+            ${metronomeTempos.map(
+              (tempo) =>
+                html`<button
                   type="button"
-                  aria-pressed=${this.metronomeTempo === null ? 'true' : 'false'}
+                  aria-pressed=${tempo === this.metronomeTempo ? 'true' : 'false'}
                   @click=${() => {
-                    this.emit('metronome-change', { tempo: null });
+                    this.emit('metronome-change', { tempo });
                   }}
                 >
-                  Desligado
-                </button>
-                ${metronomeTempos.map(
-                  (tempo) =>
-                    html`<button
-                      type="button"
-                      aria-pressed=${tempo === this.metronomeTempo ? 'true' : 'false'}
-                      @click=${() => {
-                        this.emit('metronome-change', { tempo });
-                      }}
-                    >
-                      ${tempo}
-                    </button>`,
-                )}
-              </div>
-              ${
-                this.metronomeTempo === null
-                  ? nothing
-                  : html`<span class="heard"
-                      >${effectiveTempo(this.metronomeTempo, this.speed)} bpm em
-                      ${formatSpeed(this.speed)}</span
-                    >`
-              }
-            </div>
+                  ${tempo}
+                </button>`,
+            )}
           </div>
+          ${
+            this.metronomeTempo === null
+              ? nothing
+              : html`<span class="heard"
+                  >${effectiveTempo(this.metronomeTempo, this.speed)} bpm em ${formatSpeed(this.speed)}</span
+                >`
+          }
         </div>
       </div>
     `;

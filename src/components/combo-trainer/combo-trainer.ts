@@ -9,6 +9,7 @@ import { ControllerLayoutController } from '../../controllers/controller-layout.
 import { legendTokens } from '../../lib/combo/controller-layout.ts';
 import { buildTimeline, lastIndexAtOrBefore, type Timeline } from '../../lib/combo/timeline.ts';
 import { readTrainerPreferences, storeTrainerPreferences } from '../../lib/preferences.ts';
+import { appConfig } from '../../config/app.config.ts';
 import { baseStyles } from '../../styles/shared.styles.ts';
 import '../combo-list/combo-list.ts';
 import '../combo-steps/combo-steps.ts';
@@ -66,6 +67,7 @@ export class AppComboTrainer extends LitElement {
 
       .main {
         display: grid;
+        grid-template-columns: minmax(0, 1fr);
         gap: var(--spacing-stack-sm);
         min-inline-size: 0;
       }
@@ -232,6 +234,8 @@ export class AppComboTrainer extends LitElement {
   ];
 
   @property({ attribute: false }) comboSet: ComboSet | null = null;
+  /** Offers the metronome. Off by default for now (see appConfig.features). */
+  @property({ type: Boolean }) metronome: boolean = appConfig.features.metronome;
 
   @state() private comboId: string | null = null;
 
@@ -263,6 +267,11 @@ export class AppComboTrainer extends LitElement {
   }
 
   protected override willUpdate(changed: PropertyValues<this>): void {
+    if (changed.has('metronome')) {
+      // A saved tempo only comes back when the metronome is on offer: hidden, it never plays.
+      this.playback.setMetronomeTempo(this.metronome ? this.savedPreferences.metronomeTempo : null);
+    }
+
     if (changed.has('comboSet')) {
       this.comboId = resolveComboId(
         this.comboSet,
@@ -443,6 +452,7 @@ export class AppComboTrainer extends LitElement {
           .loop=${playback.loop}
           .inputClicks=${playback.inputClicks}
           .metronomeTempo=${playback.metronomeTempo}
+          .metronome=${this.metronome}
           @playback-toggle=${() => {
             playback.toggle();
           }}
