@@ -6,11 +6,11 @@ Chega de caçar combo em fórum e pausar vídeo para decorar. O Receba!! indica 
 
 ## Duplas recomendadas
 
-Escolha o lutador e o app já seleciona o **Kameo ideal**, com mais duas alternativas e o motivo de cada uma. Começa pelos 12 lutadores mais jogados no online (Ghostface, Johnny Cage, Kitana, Liu Kang, Mileena, Noob Saibot, Omni-Man, Raiden, Scorpion, Smoke, Sub-Zero e T-1000).
+Escolha o lutador e o app já seleciona o **Kameo ideal**, com mais duas alternativas e o motivo de cada uma. Começa por 13 lutadores: os 12 mais jogados no online (Ghostface, Johnny Cage, Kitana, Liu Kang, Mileena, Noob Saibot, Omni-Man, Raiden, Scorpion, Smoke, Sub-Zero e T-1000) e o Sektor.
 
 As indicações cruzam:
 
-- os combos que a comunidade publica por dupla no [mk1kombo](https://mk1kombo.kagewebsite.com/) (e as listas "Best Kameos" do site);
+- os combos que a comunidade publica por dupla no [mk1kombo](https://mk1kombo.kagewebsite.com/) (e as listas "Best Kameos" do site) e guias de combo no YouTube (como o de Sektor + Mavado, do canal Combaster);
 - guias e vídeos de combos no YouTube;
 - o uso de lutadores e Kameos no online, que a comunidade do GameFAQs compila a cada temporada (a Sareena lidera todas);
 - os personagens usados no Evo 2025.

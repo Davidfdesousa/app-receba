@@ -163,6 +163,19 @@ const fighters: readonly FighterProfile[] = [
     ],
   },
   {
+    id: 'sektor',
+    name: 'Sektor',
+    communityUrl: community('sektor'),
+    picks: [
+      {
+        kameoId: 'mavado',
+        reason: 'O Kameo que mais aparece em guias e vídeos de combo do Sektor no YouTube.',
+      },
+      { kameoId: 'frost', reason: 'Tem os combos de Sektor mais recentes publicados no mk1kombo (2025).' },
+      { kameoId: 'motaro', reason: 'Aparece em combos da comunidade e em vídeos de Sektor.' },
+    ],
+  },
+  {
     id: 'smoke',
     name: 'Smoke',
     communityUrl: community('smoke'),
