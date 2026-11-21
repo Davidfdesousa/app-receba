@@ -1,3 +1,9 @@
+## [1.3.0](https://github.com/Davidfdesousa/app-receba/compare/v1.2.0...v1.3.0) (2026-11-21)
+
+### Features
+
+* lighter duo picker, author credit and iPhone sound fix ([#12](https://github.com/Davidfdesousa/app-receba/issues/12)) ([16d9dcc](https://github.com/Davidfdesousa/app-receba/commit/16d9dcc1eb9359e866719ee87355e05416d45251))
+
 ## [1.2.0](https://github.com/Davidfdesousa/app-receba/compare/v1.1.0...v1.2.0) (2026-11-21)
 
 ### Features
