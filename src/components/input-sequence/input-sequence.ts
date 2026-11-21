@@ -68,7 +68,7 @@ export class AppInputSequence extends LitElement {
       .joiner {
         color: var(--color-content-input-joiner);
         font-family: var(--typography-font-family-ui);
-        font-size: calc(var(--_size) * 0.5);
+        font-size: max(var(--typography-min-size), calc(var(--_size) * 0.5));
         font-weight: var(--typography-label-weight);
         line-height: 1;
       }
@@ -76,7 +76,7 @@ export class AppInputSequence extends LitElement {
       .pause {
         align-self: flex-end;
         color: var(--color-content-muted);
-        font-size: calc(var(--_size) * 0.6);
+        font-size: max(var(--typography-min-size), calc(var(--_size) * 0.6));
         line-height: 1;
       }
 

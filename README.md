@@ -30,6 +30,7 @@ Escolha um combo e toque em **Tocar**: a tela mostra cada botão no momento de a
 - **Passo atual em destaque**, com a nota do passo e o próximo, e a lista numerada (clique num passo para pular para ele).
 - **Contagem 3, 2, 1**, velocidade 0,5x / 0,75x / 1x, repetição, **cliques dos botões** e **metrônomo** (90 / 120 / 150 BPM, a contagem cai nos tempos e o primeiro input no tempo forte).
 - No celular, do título da dupla até os botões de velocidade cabe numa tela só (inclusive com o celular deitado, a partir de ~380px de altura).
+- No iPhone (Safari e Chrome) os cliques tocam mesmo com a chave de silencioso ligada: o áudio pede uma sessão de reprodução (Audio Session API) e é liberado no próprio toque em Tocar.
 - Espaço toca e pausa. A dupla, a velocidade, os sons, o metrônomo e o último combo ficam salvos no navegador.
 - Combos da comunidade [mk1kombo](https://mk1kombo.kagewebsite.com/), com o autor indicado em cada um.
 
@@ -151,6 +152,7 @@ Tema:
 
 - Por padrão o app é escuro, inspirado no site oficial do Mortal Kombat 1: superfícies quase pretas (#000 na barra, #0a0a0a na página, #141414 nos painéis), texto branco e prata e o vermelho do dragão (#b10000) como único destaque, nas ações, na seleção e na linha sob a barra. Sem degradês: toda cor é chapada. O tema claro é "fumaça" (branco e prata, com o mesmo vermelho).
 - Títulos e etiquetas usam a serifa gravada (Cinzel); números e leituras curtas, a condensada (Saira Condensed).
+- Acessibilidade: nenhum texto fica abaixo de 14px (`--typography-min-size`), inclusive as letras dentro dos botões.
 - `data-theme="light" | "dark"` no `<html>` força um tema; também funciona em qualquer elemento para tematizar só aquele trecho.
 - O `app-theme-toggle` salva a escolha em `localStorage` (`app:theme`) e um script inline no `index.html` restaura antes do primeiro paint, sem flash.
 - Cada token de cor declara os dois valores uma única vez com `light-dark()`; o build gera fallback para navegadores antigos.
