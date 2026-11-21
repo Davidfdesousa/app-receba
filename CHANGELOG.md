@@ -1,3 +1,9 @@
+## [1.3.2](https://github.com/Davidfdesousa/app-receba/compare/v1.3.1...v1.3.2) (2026-11-21)
+
+### Bug Fixes
+
+* roomier picker font, hidden metronome, jump to the picked duo ([#14](https://github.com/Davidfdesousa/app-receba/issues/14)) ([4ba9529](https://github.com/Davidfdesousa/app-receba/commit/4ba952993cca60d54d21330aaa274e061e0fe068))
+
 ## [1.3.1](https://github.com/Davidfdesousa/app-receba/compare/v1.3.0...v1.3.1) (2026-11-21)
 
 ### Bug Fixes
