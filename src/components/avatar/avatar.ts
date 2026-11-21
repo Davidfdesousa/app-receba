@@ -31,7 +31,7 @@ export class AppAvatar extends LitElement {
         border-radius: var(--radius-full);
         background: var(--color-bg-brand-subtle);
         color: var(--color-content-brand);
-        font-size: calc(var(--_size) * 0.4);
+        font-size: max(var(--typography-min-size), calc(var(--_size) * 0.4));
         font-weight: var(--font-weight-semibold);
       }
 

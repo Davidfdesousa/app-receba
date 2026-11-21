@@ -112,7 +112,7 @@ export class AppInputGlyph extends LitElement {
       }
 
       .letter .caption {
-        font-size: calc(var(--_size) * 0.56);
+        font-size: max(var(--typography-min-size), calc(var(--_size) * 0.56));
         letter-spacing: 0;
       }
 
@@ -125,7 +125,7 @@ export class AppInputGlyph extends LitElement {
 
       .caption {
         font-family: var(--typography-font-family-ui);
-        font-size: calc(var(--_size) * 0.46);
+        font-size: max(var(--typography-min-size), calc(var(--_size) * 0.46));
         font-weight: var(--typography-figure-weight);
         line-height: 1;
         letter-spacing: var(--typography-label-letter-spacing);

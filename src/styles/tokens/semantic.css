@@ -188,7 +188,9 @@
   --typography-label-size: var(--font-size-100);
   --typography-label-weight: var(--font-weight-semibold);
   --typography-label-letter-spacing: var(--letter-spacing-wide);
-  --typography-caption-size: var(--font-size-75);
+  --typography-caption-size: var(--font-size-100);
+  /* Accessibility floor: no text in the app is smaller than 14px, glyph captions included. */
+  --typography-min-size: var(--font-size-100);
 
   /* Shape */
   --radius-control: var(--radius-xs);

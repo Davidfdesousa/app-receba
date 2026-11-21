@@ -18,8 +18,9 @@ const ordinal = (rank: number) => `${rank}º`;
 
 /**
  * Picks the fighter and the Kameo. Choosing a fighter selects the partner the community
- * recommends most; the ranked suggestions stay one tap away as small tags, with the
- * reason for the selected one. Kameos without combos yet show dashed ("em breve").
+ * recommends most; the ranked suggestions stay one tap away as small tags. The reason
+ * and the sources sit in a collapsed "Por que esses Kameos?" to keep the card light.
+ * Kameos without combos yet show dashed ("em breve").
  *
  * @fires duo-change - A new duo was picked. Detail: `{ fighterId, kameoId }`.
  */
@@ -44,16 +45,6 @@ export class AppDuoPicker extends LitElement {
         border: 1px solid var(--color-border-default);
         border-radius: var(--radius-surface);
         background: var(--color-bg-default);
-      }
-
-      .title {
-        margin: 0;
-        color: var(--color-content-strong);
-        font-family: var(--typography-font-family-display);
-        font-size: var(--typography-body-md-size);
-        font-weight: var(--typography-display-weight);
-        letter-spacing: var(--typography-display-letter-spacing);
-        text-transform: uppercase;
       }
 
       .fields {
@@ -190,8 +181,52 @@ export class AppDuoPicker extends LitElement {
         color: var(--color-content-brand);
       }
 
-      .reason {
+      /* The reasons and sources stay one tap away, so the card shows only the choices. */
+      .why summary {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-inline-2xs);
+        min-block-size: 2rem;
         color: var(--color-content-subtle);
+        font-size: var(--typography-body-sm-size);
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .why summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .why summary::before {
+        content: '+';
+        inline-size: 1em;
+        color: var(--color-content-brand);
+        font-family: var(--typography-font-family-ui);
+        font-weight: var(--typography-figure-weight);
+        text-align: center;
+      }
+
+      .why[open] summary::before {
+        content: '−';
+      }
+
+      .why summary:hover {
+        color: var(--color-content-strong);
+      }
+
+      .why summary:focus-visible {
+        outline: var(--focus-ring-width) solid var(--color-border-focus);
+        outline-offset: var(--focus-ring-offset);
+      }
+
+      .why-body {
+        display: grid;
+        gap: var(--spacing-stack-xs);
+        padding-block: var(--spacing-stack-2xs) var(--spacing-stack-xs);
+      }
+
+      .reason {
+        color: var(--color-content-default);
         font-size: var(--typography-body-sm-size);
       }
 
@@ -339,7 +374,7 @@ export class AppDuoPicker extends LitElement {
     </svg>`;
 
     return html`<section class="picker" aria-labelledby="picker-title">
-      <h2 id="picker-title" class="title">Monte sua dupla</h2>
+      <h2 id="picker-title" class="visually-hidden">Monte sua dupla</h2>
       <div class="fields">
         <label class="field">
           <span class="field-label">Lutador</span>
@@ -390,16 +425,21 @@ export class AppDuoPicker extends LitElement {
               </div>`
             : nothing
         }
-        <p class="reason" aria-live="polite">
-          ${
-            selected?.pick
-              ? html`<app-notation-text text=${selected.pick.reason}></app-notation-text>`
-              : ideal
-                ? `Fora das indicações da comunidade. Para ${fighter.name}, o Kameo ideal é ${ideal.kameo.name}.`
-                : nothing
-          }
-        </p>
-        ${this.renderSources(roster)}
+        <details class="why">
+          <summary>Por que esses Kameos?</summary>
+          <div class="why-body">
+            <p class="reason">
+              ${
+                selected?.pick
+                  ? html`<app-notation-text text=${selected.pick.reason}></app-notation-text>`
+                  : ideal
+                    ? `Fora das indicações da comunidade. Para ${fighter.name}, o Kameo ideal é ${ideal.kameo.name}.`
+                    : nothing
+              }
+            </p>
+            ${this.renderSources(roster)}
+          </div>
+        </details>
       </div>
     </section>`;
   }
