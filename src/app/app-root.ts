@@ -1,7 +1,6 @@
 import { LitElement, css, html, nothing } from 'lit';
 import { customElement } from 'lit/decorators.js';
 
-import '../components/footer/footer.ts';
 import '../components/header/header.ts';
 import '../components/icon/icon.ts';
 import { appConfig } from '../config/app.config.ts';
@@ -93,6 +92,7 @@ export class AppRoot extends LitElement {
       }
       <main>
         <app-trainer-page
+          .author=${appConfig.author}
           .roster=${roster}
           .selection=${this.duo.selection}
           .availableDuos=${availableDuos}
@@ -103,7 +103,6 @@ export class AppRoot extends LitElement {
           }}
         ></app-trainer-page>
       </main>
-      <app-footer author-name=${appConfig.author.name} author-url=${appConfig.author.url}></app-footer>
     `;
   }
 }

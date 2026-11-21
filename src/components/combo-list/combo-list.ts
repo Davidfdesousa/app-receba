@@ -50,6 +50,7 @@ export class AppComboList extends LitElement {
       :host {
         display: block;
         min-inline-size: 0;
+        padding-block-end: var(--spacing-stack-sm);
       }
 
       .tabs {
@@ -83,8 +84,9 @@ export class AppComboList extends LitElement {
         color: var(--color-content-brand);
       }
 
+      /* Room above and below the carousel, so it does not stick to the tabs or the stage. */
       .hint {
-        margin-block: var(--spacing-stack-xs);
+        margin-block: var(--spacing-stack-xs) var(--spacing-stack-md);
         color: var(--color-content-muted);
         font-size: var(--typography-caption-size);
         line-height: var(--typography-title-line-height);
@@ -107,7 +109,7 @@ export class AppComboList extends LitElement {
         display: flex;
         justify-content: center;
         gap: var(--spacing-inline-2xs);
-        margin-block-start: var(--spacing-stack-xs);
+        margin-block-start: var(--spacing-stack-sm);
       }
 
       .dot {
@@ -196,6 +198,10 @@ export class AppComboList extends LitElement {
       }
 
       @media (min-width: 40rem) {
+        :host {
+          padding-block-end: 0;
+        }
+
         .list {
           display: grid;
           gap: var(--spacing-stack-2xs);

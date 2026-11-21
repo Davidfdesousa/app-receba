@@ -1,4 +1,4 @@
-import { LitElement, css, html, nothing } from 'lit';
+import { LitElement, css, html, nothing, type PropertyValues } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 
 import '../components/button/button.ts';
@@ -8,7 +8,7 @@ import type { ComboSetStatus } from '../controllers/duo.controller.ts';
 import type { ComboSet } from '../lib/combo/combo.types.ts';
 import { findFighter, findKameo, kameoOptions } from '../lib/roster/roster.ts';
 import type { DuoId, DuoSelection, FighterProfile, Roster } from '../lib/roster/roster.types.ts';
-import { baseStyles } from '../styles/shared.styles.ts';
+import { baseStyles, visuallyHidden } from '../styles/shared.styles.ts';
 
 /**
  * Trainer page: the pitch, the duo picker and the trainer for the picked duo.
@@ -18,6 +18,7 @@ import { baseStyles } from '../styles/shared.styles.ts';
 export class AppTrainerPage extends LitElement {
   static override styles = [
     baseStyles,
+    visuallyHidden,
     css`
       :host {
         display: block;
@@ -72,6 +73,26 @@ export class AppTrainerPage extends LitElement {
 
       .lede strong {
         color: var(--color-content-strong);
+      }
+
+      .credit {
+        color: var(--color-content-muted);
+        font-size: var(--typography-body-sm-size);
+      }
+
+      .credit a {
+        color: var(--color-content-strong);
+        font-weight: var(--typography-label-weight);
+        text-underline-offset: 0.2em;
+      }
+
+      .credit a:hover {
+        color: var(--color-content-brand);
+      }
+
+      .credit a:focus-visible {
+        outline: var(--focus-ring-width) solid var(--color-border-focus);
+        outline-offset: var(--focus-ring-offset);
       }
 
       .content {
@@ -183,14 +204,30 @@ export class AppTrainerPage extends LitElement {
     `,
   ];
 
+  /** Credit under the pitch, linking to the author's profile. */
+  @property({ attribute: false }) author: { name: string; url: string } | null = null;
   @property({ attribute: false }) roster: Roster | null = null;
   @property({ attribute: false }) selection: DuoSelection | null = null;
   @property({ attribute: false }) availableDuos: ReadonlySet<DuoId> = new Set();
   @property({ attribute: false }) comboSet: ComboSet | null = null;
   @property() status: ComboSetStatus = 'loading';
 
+  /** The player just picked a duo: once it renders, bring its title to the top of the screen. */
+  private revealDuo = false;
+
   private requestDuo(selection: DuoSelection): void {
+    this.revealDuo = true;
     this.dispatchEvent(new CustomEvent('duo-change', { detail: selection, bubbles: true, composed: true }));
+  }
+
+  protected override updated(changed: PropertyValues<this>): void {
+    if (!this.revealDuo || !changed.has('selection')) return;
+    this.revealDuo = false;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.renderRoot
+      .querySelector('.duo')
+      ?.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
   }
 
   private renderHero() {
@@ -202,6 +239,16 @@ export class AppTrainerPage extends LitElement {
         que a comunidade mais usa com o seu lutador e mostra cada botão no tempo certo, até o combo sair na
         mão.
       </p>
+      ${
+        this.author
+          ? html`<p class="credit">
+              Desenvolvido por
+              <a href=${this.author.url} target="_blank" rel="noopener noreferrer"
+                >${this.author.name}<span class="visually-hidden"> (LinkedIn, abre em nova aba)</span></a
+              >
+            </p>`
+          : nothing
+      }
     </header>`;
   }
 
@@ -277,6 +324,9 @@ export class AppTrainerPage extends LitElement {
                 .roster=${roster}
                 .selection=${selection}
                 .availableDuos=${this.availableDuos}
+                @duo-change=${() => {
+                  this.revealDuo = true;
+                }}
               ></app-duo-picker>
               ${this.renderTrainer(roster, selection)}
             </div>`
