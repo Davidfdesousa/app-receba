@@ -1,3 +1,9 @@
+## [1.2.0](https://github.com/Davidfdesousa/app-receba/compare/v1.1.0...v1.2.0) (2026-11-21)
+
+### Features
+
+* add Xbox buttons and a flat, compact mobile trainer ([#10](https://github.com/Davidfdesousa/app-receba/issues/10)) ([af5ac71](https://github.com/Davidfdesousa/app-receba/commit/af5ac71785e184f54d063371b0692592b7496ca6)), closes [#000](https://github.com/Davidfdesousa/app-receba/issues/000) [#0a0a0a](https://github.com/Davidfdesousa/app-receba/issues/0a0a0a) [#141414](https://github.com/Davidfdesousa/app-receba/issues/141414)
+
 ## [1.1.0](https://github.com/Davidfdesousa/app-receba/compare/v1.0.0...v1.1.0) (2026-11-21)
 
 ### Features
