@@ -21,6 +21,8 @@ export interface ComboSource {
   url: string;
   reference: string;
   author: string;
+  /** Word shown before the reference, e.g. `Vídeo` for `Vídeo 0:58 por …`. Defaults to `Combo`. */
+  label?: string;
 }
 
 export interface Combo {

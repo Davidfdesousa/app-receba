@@ -20,6 +20,7 @@ export const comboSetLoaders: Readonly<Record<DuoId, ComboSetLoader>> = {
   'raiden+frost': () => import('./raiden-frost.ts').then((module) => module.raidenFrost),
   'raiden+jax': () => import('./raiden-jax.ts').then((module) => module.raidenJax),
   'scorpion+sareena': () => import('./scorpion-sareena.ts').then((module) => module.scorpionSareena),
+  'sektor+mavado': () => import('./sektor-mavado.ts').then((module) => module.sektorMavado),
   'sub-zero+sareena': () => import('./sub-zero-sareena.ts').then((module) => module.subZeroSareena),
   'sub-zero+sonya': () => import('./sub-zero-sonya.ts').then((module) => module.subZeroSonya),
   't-1000+janet-cage': () => import('./t-1000-janet-cage.ts').then((module) => module.t1000JanetCage),

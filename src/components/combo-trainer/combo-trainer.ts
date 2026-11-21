@@ -339,12 +339,13 @@ export class AppComboTrainer extends LitElement {
     if (combo.category === 'piece' || !combo.source) return combo.description ?? '';
 
     const { source } = combo;
-    return html`Combo
+    const label = source.label ?? 'Combo';
+    return html`${label}
       <a
         href=${source.url}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label="Combo ${source.reference} no ${source.site} (abre em nova aba)"
+        aria-label="${label} ${source.reference} no ${source.site} (abre em nova aba)"
         >${source.reference}</a
       >
       por ${source.author}${combo.position ? `, ${combo.position}` : ''}`;
@@ -487,7 +488,9 @@ export class AppComboTrainer extends LitElement {
           }}
         ></app-combo-steps>
         ${this.renderLegend()}
-        <p class="credits">Combos da comunidade mk1kombo, com o autor indicado em cada um.</p>
+        <p class="credits">
+          Combos da comunidade (mk1kombo e guias no YouTube), com o autor indicado em cada um.
+        </p>
       </div>
     </div>`;
   }
